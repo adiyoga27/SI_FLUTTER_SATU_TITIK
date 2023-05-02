@@ -1,5 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:food_delivery_app/Screens/cart/invoice.dart';
+import 'package:satutitik/Screens/cart/invoice.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {

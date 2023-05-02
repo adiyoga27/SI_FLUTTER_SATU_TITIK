@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/Screens/details/detail.dart';
-import 'package:food_delivery_app/Screens/home/widget/food_item.dart';
+import 'package:satutitik/Screens/details/detail.dart';
+import 'package:satutitik/Screens/home/widget/food_item.dart';
 
-import 'package:food_delivery_app/models/restaurant.dart';
+import 'package:satutitik/models/restaurant.dart';
 
 class FoodListView extends StatelessWidget {
   final int? selected;

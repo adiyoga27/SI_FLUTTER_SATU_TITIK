@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/Screens/cart/invoice.dart';
-import 'package:food_delivery_app/Screens/details/widget/food_detail.dart';
-import 'package:food_delivery_app/Screens/details/widget/food_image.dart';
-import 'package:food_delivery_app/constants/colors.dart';
+import 'package:satutitik/Screens/cart/invoice.dart';
+import 'package:satutitik/Screens/details/widget/food_detail.dart';
+import 'package:satutitik/Screens/details/widget/food_image.dart';
+import 'package:satutitik/constants/colors.dart';
 
-import 'package:food_delivery_app/models/food.dart';
-import 'package:food_delivery_app/widgets/custom_app_bar.dart';
+import 'package:satutitik/models/food.dart';
+import 'package:satutitik/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
 
 class DetailPage extends StatelessWidget {

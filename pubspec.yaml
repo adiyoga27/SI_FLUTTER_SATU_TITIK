@@ -1,4 +1,4 @@
-name: food_delivery_app
+name: satutitik
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -27,6 +27,8 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   get: ^4.6.5
   fluttertoast: ^8.2.1
+  qr_code_scanner: ^1.0.1
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

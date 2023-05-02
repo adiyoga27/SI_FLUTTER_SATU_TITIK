@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/Screens/cart/invoice.dart';
-import 'package:food_delivery_app/Screens/home/widget/food_list.dart';
-import 'package:food_delivery_app/Screens/home/widget/food_list_view.dart';
-import 'package:food_delivery_app/Screens/home/widget/restaurant_info.dart';
-import 'package:food_delivery_app/constants/colors.dart';
-import 'package:food_delivery_app/models/restaurant.dart';
-import 'package:food_delivery_app/widgets/custom_app_bar.dart';
+import 'package:satutitik/Screens/cart/invoice.dart';
+import 'package:satutitik/Screens/home/widget/food_list.dart';
+import 'package:satutitik/Screens/home/widget/food_list_view.dart';
+import 'package:satutitik/Screens/home/widget/restaurant_info.dart';
+import 'package:satutitik/constants/colors.dart';
+import 'package:satutitik/models/restaurant.dart';
+import 'package:satutitik/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:food_delivery_app/constants/colors.dart';
+import 'package:satutitik/constants/colors.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({Key? key, this.name, this.price, this.qty, this.image})

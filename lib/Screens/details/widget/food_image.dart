@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/constants/colors.dart';
-import 'package:food_delivery_app/models/food.dart';
+import 'package:satutitik/constants/colors.dart';
+import 'package:satutitik/models/food.dart';
 
 class FoodImg extends StatelessWidget {
   final Food? food;

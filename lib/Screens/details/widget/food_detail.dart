@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:food_delivery_app/Screens/details/widget/food_quantity.dart';
-import 'package:food_delivery_app/constants/colors.dart';
-import 'package:food_delivery_app/controllers/CartController.dart';
-import 'package:food_delivery_app/models/food.dart';
+import 'package:satutitik/Screens/details/widget/food_quantity.dart';
+import 'package:satutitik/constants/colors.dart';
+import 'package:satutitik/controllers/CartController.dart';
+import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
 
 class FoodDetail extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_delivery_app/Screens/home/home.dart';
+import 'package:satutitik/Screens/home/home.dart';
+import 'package:satutitik/Screens/qr/scan.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Food Delivery App',
-      home: HomePage(),
+      home: ScanPage(),
     );
   }
 }
