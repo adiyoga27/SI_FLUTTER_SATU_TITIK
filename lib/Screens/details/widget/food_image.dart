@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/models/food.dart';
+import 'package:satutitik/models/product.dart';
 
 class FoodImg extends StatelessWidget {
-  final Food? food;
+  final ProductModel? food;
   FoodImg({this.food});
 
   @override
@@ -45,8 +46,8 @@ class FoodImg extends StatelessWidget {
                     blurRadius: 10,
                   )
                 ]),
-                child: Image.asset(
-                  food!.imgUrl!,
+                child: Image.network(
+                  food!.image!,
                   fit: BoxFit.cover,
                 )),
           )

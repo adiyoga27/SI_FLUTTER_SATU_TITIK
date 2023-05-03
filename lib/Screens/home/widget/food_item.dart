@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:satutitik/constants/colors.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:satutitik/models/food.dart';
 import 'package:satutitik/models/product.dart';
 
@@ -25,12 +24,7 @@ class FoodItem extends StatelessWidget {
             padding: EdgeInsets.all(5),
             width: 110,
             height: 110,
-            child: CachedNetworkImage(
-              imageUrl: "${productModel.image!}",
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  CircularProgressIndicator(value: downloadProgress.progress),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
+            child: Image.network('${productModel.image!}'),
           ),
           Expanded(
             child: Container(

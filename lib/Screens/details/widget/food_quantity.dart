@@ -7,9 +7,10 @@ import 'package:satutitik/controllers/CartController.dart';
 
 import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
+import 'package:satutitik/models/product.dart';
 
 class FoodQuantity extends StatelessWidget {
-  final Food? food;
+  final ProductModel? food;
   final int? qty;
   const FoodQuantity({
     Key? key,
@@ -40,7 +41,7 @@ class FoodQuantity extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () => showAlertDialog(
-                          context, '${food!.name} x ${controller.count}'),
+                          context, food!),
                       child: Text(
                         'Add to Cart',
                         style: TextStyle(
@@ -95,7 +96,7 @@ class FoodQuantity extends StatelessWidget {
         ));
   }
 
-  showAlertDialog(BuildContext context, String food) {
+  showAlertDialog(BuildContext context, ProductModel productModel) {
     final controller = Get.put(CartController());
 
     // set up the buttons
@@ -111,8 +112,8 @@ class FoodQuantity extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white)),
       child: Text("Lanjutkan"),
       onPressed: () {
-        Fluttertoast.showToast(
-            gravity: ToastGravity.BOTTOM, msg: 'success add to cart');
+        controller.addToCart(productModel.id!.toInt());
+       
       },
     );
 
@@ -120,7 +121,7 @@ class FoodQuantity extends StatelessWidget {
     AlertDialog alert = AlertDialog(
       title: Text("Apakah anda yakin ?"),
       content: Text(
-          "Pesanan : \n\n$food \n\nPastikan jumlah pesanan anda sudah benar, anda tidak dapat membatalkan pesan jika sudah konfirmasi !  "),
+          "Pesanan : \n\n${food!.name} x ${controller.count}\n\nPastikan jumlah pesanan anda sudah benar, anda tidak dapat membatalkan pesan jika sudah konfirmasi !  "),
       actions: [
         cancelButton,
         continueButton,

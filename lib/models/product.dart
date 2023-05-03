@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class ProductModel {
     ProductModel({
         required this.id,
@@ -11,13 +13,13 @@ class ProductModel {
     });
 
     final int? id;
-    final String? categoryId;
+    final int? categoryId;
     final String? categoryName;
     final String? name;
     final String? description;
     final String? image;
-    final String? price;
-    final String? discount;
+    final int? price;
+    final int? discount;
 
     factory ProductModel.fromJson(Map<String, dynamic> json){ 
         return ProductModel(

@@ -4,20 +4,30 @@ import 'package:satutitik/Screens/cart/invoice.dart';
 import 'package:satutitik/Screens/details/widget/food_detail.dart';
 import 'package:satutitik/Screens/details/widget/food_image.dart';
 import 'package:satutitik/constants/colors.dart';
+import 'package:satutitik/controllers/CartController.dart';
+import 'package:satutitik/controllers/HomeController.dart';
 
 import 'package:satutitik/models/food.dart';
+import 'package:satutitik/models/order.dart';
+import 'package:satutitik/models/product.dart';
 import 'package:satutitik/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
 
 class DetailPage extends StatelessWidget {
-  final Food food;
+  final ProductModel productModel;
+  final OrderModel orderModel;
+
   const DetailPage({
     Key? key,
-    required this.food,
+    required this.productModel,
+    required this.orderModel,
+
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final cartCtrl = Get.put(CartController());
+    final homeCtrl = Get.put(HomeController());
     return Scaffold(
         backgroundColor: kPrimaryColor,
         body: SingleChildScrollView(
@@ -29,18 +39,32 @@ class DetailPage extends StatelessWidget {
                 leftCallback: () => Navigator.pop(context),
               ),
               FoodImg(
-                food: food,
+                food: productModel,
               ),
               FoodDetail(
-                food: food,
+                food: productModel,
               )
             ],
           ),
         ),
-        floatingActionButton: Container(
+        floatingActionButton: Obx(() {
+        return  cartCtrl.isLoading.value ? RawMaterialButton(
+                onPressed: () => Get.to(InvoicePage()),
+                fillColor: kPrimaryColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                elevation: 2,
+                child:  Icon(
+                      Icons.shopping_bag_outlined,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+             
+ 
+    ) : Container(
             width: 100,
             height: 56,
-            child: RawMaterialButton(
+            child: homeCtrl.orderModel.cart.length.obs > 0 ? RawMaterialButton(
               onPressed: () => Get.to(InvoicePage()),
               fillColor: kPrimaryColor,
               shape: RoundedRectangleBorder(
@@ -59,7 +83,7 @@ class DetailPage extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
                     child: Text(
-                      food!.quantity!.toString(),
+                      homeCtrl.orderModel.cart.length.obs.toString(),
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -69,6 +93,10 @@ class DetailPage extends StatelessWidget {
                   )
                 ],
               ),
-            )));
+            ) : Icon(
+          Icons.shopping_bag_outlined,
+          color: Colors.black,
+          size: 30,
+        ));}));
   }
 }

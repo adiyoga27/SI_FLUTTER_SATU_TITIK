@@ -6,10 +6,11 @@ import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/CartController.dart';
 import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
+import 'package:satutitik/models/product.dart';
 
 class FoodDetail extends StatelessWidget {
   final controller = Get.put(CartController());
-  final Food? food;
+  final ProductModel? food;
   FoodDetail({this.food});
 
   @override
@@ -35,12 +36,12 @@ class FoodDetail extends StatelessWidget {
                 _buildIconText(
                   Icons.star_outlined,
                   Colors.amber,
-                  food!.score!.toString(),
+                  '100',
                 ),
                 _buildIconText(
                   Icons.local_fire_department_outlined,
                   Colors.red,
-                  food!.cal!,
+                  'a',
                 ),
               ],
             ),
@@ -94,7 +95,7 @@ class FoodDetail extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              food!.about!,
+              food!.description!,
               style: TextStyle(fontSize: 16, wordSpacing: 1.2, height: 1.5),
             ),
             SizedBox(height: 400),

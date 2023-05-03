@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/cart/invoice.dart';
 import 'package:satutitik/Screens/home/widget/food_list.dart';
 import 'package:satutitik/Screens/home/widget/food_list_view.dart';
@@ -18,14 +19,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var selected = 0;
   final pageController = PageController();
-  final restaurant = Restaurant.generateRestaurant();
   final homeCtrl = Get.put(HomeController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    homeCtrl.getProduct();
   }
 
   @override
@@ -35,8 +35,9 @@ class _HomePageState extends State<HomePage> {
       body: Obx(() {
         bool isLoadingCategory = homeCtrl.isLoadingCategory.value;
         bool isLoadingProduct = homeCtrl.isLoadingProduct.value;
+        bool isLoadingCart = homeCtrl.isLoadingCart.value;
 
-        return isLoadingCategory || isLoadingProduct
+        return isLoadingCategory || isLoadingProduct || isLoadingCart
             ? Center(
                 child: Container(
                   height: 50.0,
@@ -56,68 +57,120 @@ class _HomePageState extends State<HomePage> {
                   ),
                   RestaurantInfo(),
                   FoodList(
-                    selected: selected,
-                    restaurant: restaurant,
-                    callback: (int index) {
+                    category: homeCtrl.categoryModel,
+                    selected: homeCtrl.selectedCategory.value,
+                    callback: (int index, int categoryId) {
+                      homeCtrl.getProductByCategory(categoryId);
                       setState(() {
-                        selected = index;
+                        homeCtrl.selectedCategory.value = categoryId;
+                        print(index);
                       });
-                      pageController.jumpToPage(index);
                     },
                   ),
-                  Expanded(
-                      child: FoodListView(
-                    selected: selected,
-                    callback: (int index) {
-                      setState(() {
-                        selected = index;
-                      });
-                    },
-                    pageController: pageController,
-                    restaurant: restaurant,
-                    productModel: homeCtrl.productModel,
-                  )),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 25),
-                    height: 60,
-                    child: SmoothPageIndicator(
-                      controller: pageController,
-                      count: restaurant.menu.length,
-                      effect: CustomizableEffect(
-                        dotDecoration: DotDecoration(
-                          width: 8,
-                          height: 8,
-                          color: Colors.grey.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        activeDotDecoration: DotDecoration(
-                          width: 10,
-                          height: 10,
-                          color: kBackground,
-                          borderRadius: BorderRadius.circular(10),
-                          dotBorder: DotBorder(
-                            color: kPrimaryColor,
-                            padding: 2,
-                            width: 2,
+                  homeCtrl.isLoadingProductByCategory.value
+                      ? Center(
+                          child: Container(
+                            width: 50.0,
+                            height: 50.0,
+                            child: CircularProgressIndicator(),
                           ),
-                        ),
-                      ),
-                      onDotClicked: (index) => pageController.jumpToPage(index),
-                    ),
-                  )
+                        )
+                      : Expanded(
+                          child: FoodListView(
+                            orderModel: homeCtrl.orderModel,
+                          selected: homeCtrl.selectedCategory.value,
+                          callback: (int index) {
+                            setState(() {
+                              homeCtrl.selectedCategory.value = index;
+                            });
+                          },
+                          productModel: homeCtrl.productModel,
+                        )),
+                  // Container(
+                  //   padding: EdgeInsets.symmetric(horizontal: 25),
+                  //   height: 60,
+                  //   child: SmoothPageIndicator(
+                  //     controller: pageController,
+                  //     count: homeCtrl.categoryModel.length,
+                  //     effect: CustomizableEffect(
+                  //       dotDecoration: DotDecoration(
+                  //         width: 8,
+                  //         height: 8,
+                  //         color: Colors.grey.withOpacity(0.5),
+                  //         borderRadius: BorderRadius.circular(8),
+                  //       ),
+                  //       activeDotDecoration: DotDecoration(
+                  //         width: 10,
+                  //         height: 10,
+                  //         color: kBackground,
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         dotBorder: DotBorder(
+                  //           color: kPrimaryColor,
+                  //           padding: 2,
+                  //           width: 2,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     // onDotClicked: (index) => pageController.jumpToPage(index),
+                  //   ),
+                  // )
                 ],
               );
       }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(InvoicePage()),
-        elevation: 2,
-        backgroundColor: kPrimaryColor,
-        child: Icon(
-          Icons.shopping_bag_outlined,
-          color: Colors.black,
-          size: 30,
-        ),
-      ),
-    );
+    floatingActionButton: 
+    Obx(() {
+        return  homeCtrl.isLoadingCart.value ? RawMaterialButton(
+                onPressed: () => Get.to(InvoicePage()),
+                fillColor: kPrimaryColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                elevation: 2,
+                child:  Icon(
+                      Icons.shopping_bag_outlined,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+             
+ 
+    ) :  Container(
+              width: 100,
+              height: 56,
+              child:  homeCtrl.orderModel.cart.isEmpty   ? Icon(
+            Icons.shopping_bag_outlined,
+            color: Colors.black,
+            size: 30) : RawMaterialButton(
+                onPressed: () => Get.to(InvoicePage()),
+                fillColor: kPrimaryColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                elevation: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      Icons.shopping_bag_outlined,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      child: Text(
+                        homeCtrl.orderModel.cart.length.obs.toString(),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+             
+ 
+    ));
+    })
+ );
   }
 }

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/home/home.dart';
 import 'package:satutitik/Screens/reservasi.dart';
+import 'package:satutitik/controllers/HomeController.dart';
 
 class SplashscreenPage extends StatefulWidget {
   const SplashscreenPage({Key? key}) : super(key: key);
@@ -31,10 +32,13 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
     print('adad');
     Timer(Duration(seconds: 3), () async {
       final uuid = await cookies.read('uuid');
+  final homeController = Get.put(HomeController());
+  homeController.getOrder();
 
       if (uuid == null) {
         Get.to(ReservasiPage());
       } else {
+
         Get.to(HomePage());
       }
     });
