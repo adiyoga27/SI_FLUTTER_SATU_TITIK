@@ -2,14 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:satutitik/constants/colors.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:satutitik/models/food.dart';
+import 'package:satutitik/models/product.dart';
 
 class FoodItem extends StatelessWidget {
-  final Food food;
+  final ProductModel productModel;
   const FoodItem({
     Key? key,
-    required this.food,
+    required this.productModel,
   }) : super(key: key);
 
   @override
@@ -21,13 +22,16 @@ class FoodItem extends StatelessWidget {
       child: Row(
         children: [
           Container(
-              padding: EdgeInsets.all(5),
-              width: 110,
-              height: 110,
-              child: Image.asset(
-                food.imgUrl.toString(),
-                fit: BoxFit.fitHeight,
-              )),
+            padding: EdgeInsets.all(5),
+            width: 110,
+            height: 110,
+            child: CachedNetworkImage(
+              imageUrl: "${productModel.image!}",
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(top: 20, left: 10, right: 10),
@@ -38,7 +42,7 @@ class FoodItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        food.name.toString(),
+                        productModel.name!.toString(),
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -50,13 +54,13 @@ class FoodItem extends StatelessWidget {
                       )
                     ],
                   ),
-                  Text(
-                    food.desc.toString(),
-                    style: TextStyle(
-                        color: food.highLight
-                            ? kPrimaryColor
-                            : Colors.grey.withOpacity(0.8)),
-                  ),
+                  // Text(
+                  //   productModel.description.toString(),
+                  //   style: TextStyle(
+                  //       color: food.highLight
+                  //           ? kPrimaryColor
+                  //           : Colors.grey.withOpacity(0.8)),
+                  // ),
                   SizedBox(
                     height: 5,
                   ),
@@ -70,7 +74,7 @@ class FoodItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        food.price.toString(),
+                        productModel.price!.toString(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

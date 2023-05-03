@@ -6,25 +6,25 @@ import 'package:satutitik/models/product.dart';
 
 class HomeController extends GetxController {
   var count = 0;
-  ProductModel? productModel;
-  CategoryModel? categoryModel;
+  RxList<ProductModel> productModel = <ProductModel>[].obs;
+  RxList<CategoryModel> categoryModel = <CategoryModel>[].obs;
   RxBool isLoadingCategory = false.obs;
   RxBool isLoadingProduct = false.obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
+    getCategory();
+    getProduct();
     super.onInit();
-    // getCategory();
-    // getProduct();
   }
 
   @override
   void onReady() {
     // TODO: implement onReady
+    getCategory();
+    getProduct();
     super.onReady();
-    // getCategory();
-    // getProduct();
   }
 
   void increment() {
@@ -33,27 +33,38 @@ class HomeController extends GetxController {
   }
 
   void getCategory() async {
-    isLoadingCategory = true.obs;
+    print('category');
+    isLoadingCategory.value = true;
     final dio = Dio();
     final response = await dio.get(AppConfig().baseUrl + "/category");
-    print(response.data);
 
     if (response.statusCode == 200) {
-      categoryModel = CategoryModel.fromJson(response.data);
+      categoryModel.value = (response.data['data'] as List)
+          .map((e) => CategoryModel.fromJson(e))
+          .toList();
     }
-    isLoadingCategory = false.obs;
+    print(response.data['data']);
+
+    isLoadingCategory.value = false;
+    update();
   }
 
   void getProduct() async {
-    isLoadingProduct = true.obs;
+    print('product');
+
+    isLoadingProduct.value = true;
 
     final dio = Dio();
     final response = await dio.get(AppConfig().baseUrl + "/product");
-    print(response.data);
 
     if (response.statusCode == 200) {
-      productModel = ProductModel.fromJson(response.data);
+      productModel.value = (response.data['data'] as List)
+          .map((e) => ProductModel.fromJson(e))
+          .toList();
     }
-    isLoadingProduct = false.obs;
+    print(response.data['data']);
+
+    isLoadingProduct.value = false;
+    update();
   }
 }

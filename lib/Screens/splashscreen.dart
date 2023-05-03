@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/home/home.dart';
+import 'package:satutitik/Screens/reservasi.dart';
 
 class SplashscreenPage extends StatefulWidget {
   const SplashscreenPage({Key? key}) : super(key: key);
@@ -23,14 +24,22 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
     // TODO: implement initState
     super.initState();
 
-    Timer(Duration(seconds: 5), () {
-    cookies.write('uuid', '410cccf8-3ca4-4f24-b973-267fc567f729');
-
-    });
-     Get.put(HomePage());
+    _initialize();
   }
 
-  
+  _initialize() async {
+    print('adad');
+    Timer(Duration(seconds: 3), () async {
+      final uuid = await cookies.read('uuid');
+
+      if (uuid == null) {
+        Get.to(ReservasiPage());
+      } else {
+        Get.to(HomePage());
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
