@@ -5,6 +5,7 @@ import 'package:satutitik/Screens/details/widget/food_detail.dart';
 import 'package:satutitik/Screens/details/widget/food_image.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/HomeController.dart';
+import 'package:satutitik/helpers/formating_helper.dart';
 
 import 'package:satutitik/models/food.dart';
 import 'package:satutitik/widgets/custom_app_bar.dart';
@@ -66,7 +67,7 @@ class InvoicePage extends StatelessWidget {
                                 SizedBox(height: 10.0,),
 
                                 Text(
-                                  'Rp ${ctrl.orderModel.totalPrice}',
+                                  CurrencyFormat.convertToIdr(ctrl.orderModel.totalPrice, 0).toString(),
                                   style: TextStyle(
                                       fontSize: 30.0, fontWeight: FontWeight.bold),
                                 ),
@@ -167,13 +168,80 @@ class InvoicePage extends StatelessWidget {
                     SizedBox(
                       height: 10.0,
                     ),
+                     GetBuilder<HomeController>(
+                      builder: (ctrl) {
+                        return Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10.0, bottom: 10.0, left: 10.0, right: 25.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                 Text(
+                                      'Payment',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Discount'),
+                                        Text('${ctrl.orderModel.diningTable}'),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Tax'),
+                                        Text('30 April 2023'),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Total Price'),
+                                        Text('${ctrl.orderModel.customerName}'),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),  Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Payment Method'),
+                                        Text('${ctrl.orderModel.customerHp}'),
+                                      ],
+                                    ),
+                                  
+                              ],
+                            ),
+                          ),
+                          height: Get.height / 7,
+                          width: Get.width,
+                          color: Colors.white,
+                        );
+                      }
+                    ),
+
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     GetBuilder<HomeController>(
                       builder: (ctrl) {
                         return Container(
                           child: Padding(
                             padding: const EdgeInsets.only(
                               top: 10.0,
-                              bottom: 10.0,
                               left: 10.0,
                               right: 25.0,
                             ),
@@ -186,32 +254,34 @@ class InvoicePage extends StatelessWidget {
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
+                                
                                 Expanded(
                                   flex: 1,
                                   child: ListView.separated(
                                     itemCount: ctrl.orderModel.cart.length,
                                     itemBuilder: (context, index) {
-                                      return Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text('${ctrl.orderModel.cart[index].name}'),
-                                              Text('@${ctrl.orderModel.cart[index].price} x ${ctrl.orderModel.cart[index].quantity}'),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                            ],
-                                          ),
-                                          Text('Rp ${ctrl.orderModel.cart[index].totalPrice}'),
-                                        ],
+                                      return Padding(
+                                        padding: const EdgeInsets.only(bottom:8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text('${ctrl.orderModel.cart[index].name}', style: TextStyle(fontWeight: FontWeight.bold),),
+                                                Text('${CurrencyFormat.convertToIdr(ctrl.orderModel.cart[index].price, 0) } x ${ctrl.orderModel.cart[index].quantity}'),
+                                              
+                                              ],
+                                            ),
+                                            Text('${CurrencyFormat.convertToIdr(ctrl.orderModel.cart[index].totalPrice, 0) }'),
+                                          ],
+                                        ),
                                       );
                                     },
                                     separatorBuilder: (_, index) => SizedBox(
@@ -228,6 +298,10 @@ class InvoicePage extends StatelessWidget {
                         );
                       }
                     ),
+                     SizedBox(
+                      height: 10.0,
+                    ),
+                    
                   ],
                 ))
           ])),
