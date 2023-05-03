@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:satutitik/Screens/reservasi.dart';
 import 'package:satutitik/config/app_config.dart';
 import 'package:satutitik/models/category.dart';
 import 'package:satutitik/models/order.dart';
@@ -52,7 +53,7 @@ class HomeController extends GetxController {
 
           selectedCategory.value = categoryModel[0].id!;
           getProductByCategory(categoryModel[0].id!);
-    getOrder();
+        getOrder();
 
     }
     print(response.data['data']);
@@ -100,16 +101,27 @@ class HomeController extends GetxController {
 
   void getOrder() async {
     isLoadingCart.value = true;
+    try {
+      if(cookies.read('uuid') != null){
+      final dio = Dio();
+      final response = await dio.get(AppConfig().baseUrl + "/order/"+cookies.read('uuid'));
 
-    final dio = Dio();
-    final response = await dio.get(AppConfig().baseUrl + "/order/"+cookies.read('uuid'));
+      if (response.statusCode == 200) {
+        orderModel = OrderModel.fromJson(response.data['data']);
+      }else{
+        cookies.remove('uuid');
+        Get.to(ReservasiPage());
+      }
+      print(response.data['data']);
+      isLoadingCart.value = false;
 
-    if (response.statusCode == 200) {
-      orderModel = OrderModel.fromJson(response.data['data']);
     }
-    print(response.data['data']);
-    isLoadingCart.value = false;
-
+    } catch (e) {
+         cookies.remove('uuid');
+        Get.to(ReservasiPage());
+    }
+      
+   
     update();
   }
 }

@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/cart/invoice.dart';
 import 'package:get/get.dart';
+import 'package:satutitik/Screens/home/home.dart';
 import 'package:satutitik/Screens/qr/scan.dart';
 import 'package:dio/dio.dart';
 import 'package:satutitik/config/app_config.dart';
@@ -23,7 +24,7 @@ class CartController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    cookies.write('uuid', '410cccf8-3ca4-4f24-b973-267fc567f729');
+    // cookies.write('uuid', '410cccf8-3ca4-4f24-b973-267fc567f729');
     Get.put(HomeController());
   }
 
@@ -50,7 +51,7 @@ class CartController extends GetxController {
   void gotToScan() async {
     cookies.write('name', nameController.text);
     cookies.write('phone', phoneController.text);
-    cookies.write('uuid', phoneController.text);
+    cookies.write('dining_table_uuid', phoneController.text);
 
     var status = await Permission.camera.status;
     if (status.isDenied) {
@@ -72,12 +73,12 @@ class CartController extends GetxController {
       'customer_name': '${cookies.read('name')}',
       'customer_phone': '${cookies.read('phone')}'
     });
-    print(response.data);
+
 
     if (response.statusCode == 200) {
-      final reservasiModel = ReservasiData.fromJson(response.data);
+      final reservasiModel = ReservasiModel.fromJson(response.data['data']);
       cookies.write('uuid', reservasiModel.uuid);
-      return Get.to(HomeController());
+      Get.to(HomePage());
     }
   }
 

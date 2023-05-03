@@ -32,13 +32,13 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
     print('adad');
     Timer(Duration(seconds: 3), () async {
       final uuid = await cookies.read('uuid');
-  final homeController = Get.put(HomeController());
-  homeController.getOrder();
 
+      print(uuid);
       if (uuid == null) {
         Get.to(ReservasiPage());
       } else {
-
+      final homeController = Get.put(HomeController());
+      homeController.getOrder();
         Get.to(HomePage());
       }
     });
