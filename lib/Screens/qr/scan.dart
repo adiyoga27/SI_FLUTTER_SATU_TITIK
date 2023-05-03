@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:satutitik/controllers/CartController.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({Key? key}) : super(key: key);
@@ -147,14 +148,17 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
+  final cartCtrl = Get.put(CartController());
+    
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-        Get.to(HomePage());
-      });
+        cartCtrl.reservasi(scanData.code.toString());
+
+      // setState(() {
+      //   result = scanData;
+      // });
     });
   }
 

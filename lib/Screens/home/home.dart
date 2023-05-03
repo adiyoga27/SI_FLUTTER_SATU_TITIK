@@ -4,6 +4,7 @@ import 'package:satutitik/Screens/home/widget/food_list.dart';
 import 'package:satutitik/Screens/home/widget/food_list_view.dart';
 import 'package:satutitik/Screens/home/widget/restaurant_info.dart';
 import 'package:satutitik/constants/colors.dart';
+import 'package:satutitik/controllers/HomeController.dart';
 import 'package:satutitik/models/restaurant.dart';
 import 'package:satutitik/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
@@ -24,67 +25,74 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackground,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // CustomAppBar(
-          //   leftIcon: Icons.arrow_back,
-          //   rightIcon: Icons.search,
-          // ),
-          SizedBox(
-            height: 20.0,
-          ),
-          RestaurantInfo(),
-          FoodList(
-            selected: selected,
-            restaurant: restaurant,
-            callback: (int index) {
-              setState(() {
-                selected = index;
-              });
-              pageController.jumpToPage(index);
-            },
-          ),
-          Expanded(
-              child: FoodListView(
-            selected: selected,
-            callback: (int index) {
-              setState(() {
-                selected = index;
-              });
-            },
-            pageController: pageController,
-            restaurant: restaurant,
-          )),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            height: 60,
-            child: SmoothPageIndicator(
-              controller: pageController,
-              count: restaurant.menu.length,
-              effect: CustomizableEffect(
-                dotDecoration: DotDecoration(
-                  width: 8,
-                  height: 8,
-                  color: Colors.grey.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
+      body: GetBuilder<HomeController>(
+        builder: (value) {
+          // ignore: unrelated_type_equality_checks
+          return value.isLoadingCategory == true || value.isLoadingProduct == true ? Center(child: CircularProgressIndicator()) : 
+           Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // CustomAppBar(
+                //   leftIcon: Icons.arrow_back,
+                //   rightIcon: Icons.search,
+                // ),
+                SizedBox(
+                  height: 20.0,
                 ),
-                activeDotDecoration: DotDecoration(
-                  width: 10,
-                  height: 10,
-                  color: kBackground,
-                  borderRadius: BorderRadius.circular(10),
-                  dotBorder: DotBorder(
-                    color: kPrimaryColor,
-                    padding: 2,
-                    width: 2,
+                RestaurantInfo(),
+                FoodList(
+                  selected: selected,
+                  restaurant: restaurant,
+                  callback: (int index) {
+                    setState(() {
+                      selected = index;
+                    });
+                    pageController.jumpToPage(index);
+                  },
+                ),
+                Expanded(
+                    child: FoodListView(
+                  selected: selected,
+                  callback: (int index) {
+                    setState(() {
+                      selected = index;
+                    });
+                  },
+                  pageController: pageController,
+                  restaurant: restaurant,
+                )),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  height: 60,
+                  child: SmoothPageIndicator(
+                    controller: pageController,
+                    count: restaurant.menu.length,
+                    effect: CustomizableEffect(
+                      dotDecoration: DotDecoration(
+                        width: 8,
+                        height: 8,
+                        color: Colors.grey.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      activeDotDecoration: DotDecoration(
+                        width: 10,
+                        height: 10,
+                        color: kBackground,
+                        borderRadius: BorderRadius.circular(10),
+                        dotBorder: DotBorder(
+                          color: kPrimaryColor,
+                          padding: 2,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                    onDotClicked: (index) => pageController.jumpToPage(index),
                   ),
-                ),
-              ),
-              onDotClicked: (index) => pageController.jumpToPage(index),
-            ),
-          )
-        ],
+                )
+              ],
+            
+          );
+        }
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(InvoicePage()),

@@ -29,6 +29,8 @@ dependencies:
   fluttertoast: ^8.2.1
   qr_code_scanner: ^1.0.1
   permission_handler: ^10.2.0
+  get_storage: ^2.1.1
+  dio: ^5.1.1
 
 dev_dependencies:
   flutter_test:
