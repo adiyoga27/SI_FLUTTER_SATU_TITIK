@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:satutitik/Screens/details/widget/food_quantity.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/CartController.dart';
+import 'package:satutitik/helpers/formating_helper.dart';
 import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
 import 'package:satutitik/models/product.dart';
@@ -30,21 +31,13 @@ class FoodDetail extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildIconText(
-                  Icons.star_outlined,
-                  Colors.amber,
-                  '100',
-                ),
-                _buildIconText(
-                  Icons.local_fire_department_outlined,
-                  Colors.red,
-                  'a',
-                ),
-              ],
-            ),
+            Text(
+                        CurrencyFormat.convertToIdr(food!.price, 0).toString(),
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+          
             SizedBox(
               height: 39,
             ),
