@@ -68,18 +68,24 @@ class CartController extends GetxController {
 
   void reservasi(String uuid) async {
     final dio = Dio();
-    final response = await dio.post(AppConfig().baseUrl + "/reservasi", data: {
-      'table_uuid': uuid,
-      'customer_name': '${cookies.read('name')}',
-      'customer_phone': '${cookies.read('phone')}'
-    });
+    try {
+      final response = await dio.post(AppConfig().baseUrl + "/reservasi", data: {
+        'table_uuid': uuid,
+        'customer_name': '${cookies.read('name')}',
+        'customer_phone': '${cookies.read('phone')}'
+      });
 
 
-    if (response.statusCode == 200) {
-      final reservasiModel = ReservasiModel.fromJson(response.data['data']);
-      cookies.write('uuid', reservasiModel.uuid);
-      Get.to(HomePage());
+      if (response.statusCode == 200) {
+        final reservasiModel = ReservasiModel.fromJson(response.data['data']);
+        cookies.write('uuid', reservasiModel.uuid);
+        Get.to(HomePage());
+      }
+    } catch (e) {
+           Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
+
     }
+    
   }
 
   void addToCart(int productId) async {
