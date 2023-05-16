@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/CartController.dart';
+import 'package:satutitik/controllers/HomeController.dart';
 
 import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class FoodQuantity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(CartController());
+
     controller.amount = food!.price!.toDouble();
     return Container(
         width: double.maxFinite,
@@ -121,7 +123,7 @@ class FoodQuantity extends StatelessWidget {
     AlertDialog alert = AlertDialog(
       title: Text("Apakah anda yakin ?"),
       content: Text(
-          "Pesanan : \n\n${food!.name} x ${controller.count}\n\nPastikan jumlah pesanan anda sudah benar, anda tidak dapat membatalkan pesan jika sudah konfirmasi !  "),
+          "Pesanan : \n\n${food!.name} x ${controller.count}\n\nPastikan jumlah pesanan anda sudah benar "),
       actions: [
         cancelButton,
         continueButton,

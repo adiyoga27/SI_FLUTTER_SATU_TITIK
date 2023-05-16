@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:satutitik/Screens/details/widget/food_quantity.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/CartController.dart';
+import 'package:satutitik/controllers/HomeController.dart';
 import 'package:satutitik/helpers/formating_helper.dart';
 import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:satutitik/models/product.dart';
 
 class FoodDetail extends StatelessWidget {
   final controller = Get.put(CartController());
+  final ctrlHome = Get.put(HomeController());
   final ProductModel? food;
   FoodDetail({this.food});
 
@@ -41,9 +43,13 @@ class FoodDetail extends StatelessWidget {
             SizedBox(
               height: 39,
             ),
-            GetBuilder<CartController>(builder: (context) {
+           
+           Obx(() {
+            return ctrlHome.isLoadingCart.value || ctrlHome.orderModel.status != 'pending' ? SizedBox() : GetBuilder<CartController>(builder: (context) {
               return FoodQuantity(food: food, qty: controller.count);
-            }),
+            });
+           }  )
+           ,
 
             // Row(
             //   children: [

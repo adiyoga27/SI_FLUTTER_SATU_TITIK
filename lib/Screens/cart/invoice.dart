@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/cart/widget/product_card.dart';
 import 'package:satutitik/Screens/details/widget/food_detail.dart';
 import 'package:satutitik/Screens/details/widget/food_image.dart';
 import 'package:satutitik/constants/colors.dart';
+import 'package:satutitik/controllers/CartController.dart';
 import 'package:satutitik/controllers/HomeController.dart';
 import 'package:satutitik/helpers/formating_helper.dart';
 
@@ -14,6 +16,7 @@ import 'package:get/get.dart';
 class InvoicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ctrlHome = Get.put(HomeController());
     return Scaffold(
       backgroundColor: Color(0xfff8f9fd),
       body: Padding(
@@ -129,26 +132,27 @@ class InvoicePage extends StatelessWidget {
                                     ),
                                     SizedBox(
                                       height: 5.0,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Nama'),
-                                        Text('${ctrl.orderModel.customerName}'),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),  Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Phone'),
-                                        Text('${ctrl.orderModel.customerHp}'),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
+                                    ), 
+                                    
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text('Nama'),
+                                    //     Text('${ctrl.orderModel.customerName}'),
+                                    //   ],
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 5.0,
+                                    // ),  Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text('Phone'),
+                                    //     Text('${ctrl.orderModel.customerHp}'),
+                                    //   ],
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 5.0,
+                                    // ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -156,10 +160,21 @@ class InvoicePage extends StatelessWidget {
                                         Text('${ctrl.orderModel.orderNumber}'),
                                       ],
                                     ),
+                                      SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Status Pesanan'),
+                                        Text(ctrl.orderModel.status == 'pending' ? 'Belum Di Pesan' : "Sedang di Proses" , style: TextStyle(color: ctrl.orderModel.status == 'pending' ? Colors.red : Colors.green ),),
+                                      ],
+                                    ),
+                                  
                               ],
                             ),
                           ),
-                          height: Get.height / 6,
+                          height: Get.height / 7,
                           width: Get.width,
                           color: Colors.white,
                         );
@@ -190,7 +205,7 @@ class InvoicePage extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text('Discount'),
-                                        Text('${ctrl.orderModel.diningTable}'),
+                                        Text('Rp ${ctrl.orderModel.discount}'),
                                       ],
                                     ),
                                     SizedBox(
@@ -200,33 +215,33 @@ class InvoicePage extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text('Tax'),
-                                        Text('30 April 2023'),
+                                        Text('Rp ${ctrl.orderModel.tax}'),
                                       ],
                                     ),
                                     SizedBox(
                                       height: 5.0,
                                     ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Total Price'),
-                                        Text('${ctrl.orderModel.customerName}'),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),  Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Payment Method'),
-                                        Text('${ctrl.orderModel.customerHp}'),
-                                      ],
-                                    ),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text('Total Price'),
+                                    //     Text('${ctrl.orderModel.customerName}'),
+                                    //   ],
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 5.0,
+                                    // ),  Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text('Payment Method'),
+                                    //     Text('${ctrl.orderModel.customerHp}'),
+                                    //   ],
+                                    // ),
                                   
                               ],
                             ),
                           ),
-                          height: Get.height / 7,
+                          height: Get.height / 10,
                           width: Get.width,
                           color: Colors.white,
                         );
@@ -246,46 +261,51 @@ class InvoicePage extends StatelessWidget {
                               right: 25.0,
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Order Detail',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Order Detail',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                                 
-                                Expanded(
-                                  flex: 1,
-                                  child: ListView.separated(
-                                    itemCount: ctrl.orderModel.cart.length,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(bottom:8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text('${ctrl.orderModel.cart[index].name}', style: TextStyle(fontWeight: FontWeight.bold),),
-                                                Text('${CurrencyFormat.convertToIdr(ctrl.orderModel.cart[index].price, 0) } x ${ctrl.orderModel.cart[index].quantity}'),
-                                              
-                                              ],
-                                            ),
-                                            Text('${CurrencyFormat.convertToIdr(ctrl.orderModel.cart[index].totalPrice, 0) }'),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    separatorBuilder: (_, index) => SizedBox(
-                                      width: 15,
+                                Container(
+                                  height: 200.0,
+                                  child:  MediaQuery.removePadding(
+                                    context: context,
+    removeTop: true,
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: ctrl.orderModel.cart.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text('${ctrl.orderModel.cart[index].name}', style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  Text('${CurrencyFormat.convertToIdr(ctrl.orderModel.cart[index].price - ctrl.orderModel.cart[index].discount, 0) } x ${ctrl.orderModel.cart[index].quantity}'),
+                                                
+                                                ],
+                                              ),
+                                              Text('${CurrencyFormat.convertToIdr(ctrl.orderModel.cart[index].totalPrice, 0) }'),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                     
                                     ),
                                   ),
                                 ),
@@ -298,13 +318,58 @@ class InvoicePage extends StatelessWidget {
                         );
                       }
                     ),
+                    
                      SizedBox(
                       height: 10.0,
                     ),
+
                     
                   ],
                 ))
-          ])),
+          ])), floatingActionButton: 
+         Obx((){ return ctrlHome.isLoadingCart.value || ctrlHome.orderModel.status == 'pending' ? FloatingActionButton.extended(
+          onPressed: () {
+            final ctrlCart = Get.put(CartController());
+             // set up the buttons
+              Widget cancelButton = TextButton(
+                child: Text("Cancel"),
+                onPressed: () => Navigator.of(context).pop(),
+              );
+              Widget continueButton = TextButton(
+                style: ButtonStyle(
+                    textStyle: MaterialStateProperty.all<TextStyle>(
+                        TextStyle(color: Colors.white)),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white)),
+                child: Text("Lanjutkan"),
+                onPressed: () {
+                    ctrlCart.checkout();
+                    Get.back();
+                
+                },
+              );
+
+
+            AlertDialog alert = AlertDialog(
+            title: Text("Apakah anda yakin ?"),
+            content: Text(
+                "Orderan tidak dapat dibatalkan jika telah di pesan !"),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+           showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return alert;
+            },
+          );
+          },
+        label: const Text('Pesan'),
+        icon: const Icon(Icons.thumb_up),
+        backgroundColor: Colors.pink,
+      ) : SizedBox();}),
     );
   }
 
@@ -322,4 +387,6 @@ class InvoicePage extends StatelessWidget {
       ],
     );
   }
+
+
 }

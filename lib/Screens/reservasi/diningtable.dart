@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:satutitik/Screens/auth/registration.dart';
 import 'package:satutitik/Screens/home/home.dart';
 import 'package:satutitik/controllers/AuthController.dart';
+import 'package:satutitik/controllers/CartController.dart';
 import 'package:satutitik/controllers/ReservasiController.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -21,31 +22,38 @@ class _DinningTablePageState extends State<DinningTablePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Color(0xfff8f9fd),
-      backgroundColor: Colors.orange[200],
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: Center(child: Text("Meja Satu Titik")),
+  automaticallyImplyLeading: false,
+      ),
       body: Obx(() => controller.isLoading.value ? Center(child: Container(height: 100.0, width: 100.0, child: RefreshProgressIndicator(),),) : 
       GridView.builder(
         itemCount: controller.bookTableModel.length,
       itemBuilder: (context, i) {
-        return Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('${controller.bookTableModel[i].name}', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: InkWell(
-                  onTap: () {
-                    if( controller.bookTableModel[i].isActive){
+        return InkWell(
+          onTap: (){
+              if( controller.bookTableModel[i].isActive){
+                      final ctrlCart = Get.put(CartController());
+
                       final cookies = GetStorage();
                       cookies.write('uuid', controller.bookTableModel[i].uuid);
-                      Get.offAll(HomePage());
+                      cookies.write('name', "Customer "+controller.bookTableModel[i].name.toString());
+                      cookies.write('phone', "085792486889");
+                      ctrlCart.reservasi(controller.bookTableModel[i].uuid);
                     }
-                 
-                  },
-                  child: Text(controller.bookTableModel[i].isActive  ? "( Kosong )" : "( Penuh )", style: TextStyle(color:controller.bookTableModel[i].isActive ? Colors.green : Colors.red ),)),
-              ),
-            ],
+          },
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('${controller.bookTableModel[i].name}', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text(controller.bookTableModel[i].isActive  ? "( Kosong )" : "( Penuh )", style: TextStyle(color:controller.bookTableModel[i].isActive ? Colors.green : Colors.red ),),
+                ),
+              ],
+            ),
           ),
         );
       }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

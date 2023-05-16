@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
   final IconData leftIcon;
-  final IconData rightIcon;
+  final IconData? rightIcon;
   final Function()? leftCallback;
 
   const CustomAppBar(
       {Key? key,
       required this.leftIcon,
-      required this.rightIcon,
+       this.rightIcon,
       this.leftCallback})
       : super(key: key);
 
@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget {
             onTap: leftCallback != null ? () => leftCallback!() : null,
             child: _buildIcon(leftIcon),
           ),
-          _buildIcon(rightIcon),
+          // _buildIcon(rightIcon),
         ],
       ),
     );

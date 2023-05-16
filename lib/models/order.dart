@@ -76,6 +76,7 @@ class Cart {
     String name;
     int price;
     int quantity;
+    int discount;
     int totalPrice;
 
     Cart({
@@ -83,6 +84,7 @@ class Cart {
         required this.name,
         required this.price,
         required this.quantity,
+        required this.discount,
         required this.totalPrice,
     });
 
@@ -91,6 +93,7 @@ class Cart {
         name: json["name"],
         price: json["price"],
         quantity: json["quantity"],
+        discount: json["discount"],
         totalPrice: json["total_price"],
     );
 
@@ -99,6 +102,7 @@ class Cart {
         "name": name,
         "price": price,
         "quantity": quantity,
+        "discount": discount,
         "total_price": totalPrice,
     };
 }

@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
       }),
     floatingActionButton: 
     Obx(() {
-        return  homeCtrl.isLoadingCart.value ? RawMaterialButton(
+        return  homeCtrl.isLoadingCart.value  ? RawMaterialButton(
                 onPressed: () => Get.to(InvoicePage()),
                 fillColor: kPrimaryColor,
                 shape: RoundedRectangleBorder(
@@ -135,10 +135,7 @@ class _HomePageState extends State<HomePage> {
     ) :  Container(
               width: 100,
               height: 56,
-              child:  homeCtrl.orderModel.cart.isEmpty   ? Icon(
-            Icons.shopping_bag_outlined,
-            color: Colors.black,
-            size: 30) : RawMaterialButton(
+              child:   RawMaterialButton(
                 onPressed: () => Get.to(InvoicePage()),
                 fillColor: kPrimaryColor,
                 shape: RoundedRectangleBorder(
