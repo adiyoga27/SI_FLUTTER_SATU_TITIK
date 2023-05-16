@@ -44,7 +44,12 @@ class HomeController extends GetxController {
     print('category');
     isLoadingCategory.value = true;
     final dio = Dio();
-    final response = await dio.get(AppConfig().baseUrl + "/category");
+    final response = await dio.get(AppConfig().baseUrl + "/category",
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Bearer ${cookies.read('token')}",
+          }));
 
     if (response.statusCode == 200) {
       categoryModel.value = (response.data['data'] as List)
@@ -67,7 +72,12 @@ class HomeController extends GetxController {
 
     isLoadingProduct.value = true;
     final dio = Dio();
-    final response = await dio.get(AppConfig().baseUrl + "/product/"+selectedCategory.value.toString());
+    final response = await dio.get(AppConfig().baseUrl + "/product/"+selectedCategory.value.toString(),
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Bearer ${cookies.read('token')}",
+          }));
 
     if (response.statusCode == 200) {
       productModel.value = (response.data['data'] as List)
@@ -86,7 +96,12 @@ class HomeController extends GetxController {
     isLoadingProductByCategory.value = true;
 
     final dio = Dio();
-    final response = await dio.get(AppConfig().baseUrl + "/product/"+category_id.toString());
+    final response = await dio.get(AppConfig().baseUrl + "/product/"+category_id.toString(),
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Bearer ${cookies.read('token')}",
+          }));
 
     if (response.statusCode == 200) {
       productModel.value = (response.data['data'] as List)
@@ -104,7 +119,12 @@ class HomeController extends GetxController {
     try {
       if(cookies.read('uuid') != null){
       final dio = Dio();
-      final response = await dio.get(AppConfig().baseUrl + "/order/"+cookies.read('uuid'));
+      final response = await dio.get(AppConfig().baseUrl + "/order/"+cookies.read('uuid'),
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Bearer ${cookies.read('token')}",
+          }));
 
       if (response.statusCode == 200) {
         orderModel = OrderModel.fromJson(response.data['data']);

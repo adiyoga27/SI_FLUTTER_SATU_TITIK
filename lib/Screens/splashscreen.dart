@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/auth/login.dart';
 import 'package:satutitik/Screens/home/home.dart';
 import 'package:satutitik/Screens/reservasi.dart';
+import 'package:satutitik/Screens/reservasi/diningtable.dart';
 import 'package:satutitik/controllers/HomeController.dart';
 
 class SplashscreenPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
 
       print(uuid);
       if (uuid == null) {
-        Get.to(LoginPage());
+        Get.to(DinningTablePage());
       } else {
       final homeController = Get.put(HomeController());
       homeController.getOrder();

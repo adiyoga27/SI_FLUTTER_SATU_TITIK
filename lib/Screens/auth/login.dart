@@ -1,14 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:satutitik/Screens/qr/scan.dart';
+import 'package:satutitik/Screens/auth/registration.dart';
 import 'package:satutitik/controllers/AuthController.dart';
-import 'package:satutitik/controllers/CartController.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -84,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 16),
+                            padding: const EdgeInsets.only(top: 16, bottom: 5.0),
                             child: ElevatedButton(
                               style:  ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
@@ -93,6 +87,9 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () => controller.verify(),
                             ),
                           ),
+                          InkWell(
+                            onTap: () => Get.to(RegistrationPage()),
+                            child: Text('Tidak Memiliki Akun ? Klik disini', style: TextStyle(color: Colors.blue),)),
                           const Spacer(),
                         ],
                       ),

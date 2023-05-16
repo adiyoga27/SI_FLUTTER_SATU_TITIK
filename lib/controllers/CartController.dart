@@ -73,7 +73,12 @@ class CartController extends GetxController {
         'table_uuid': uuid,
         'customer_name': '${cookies.read('name')}',
         'customer_phone': '${cookies.read('phone')}'
-      });
+      },
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Bearer ${cookies.read('token')}",
+          }));
 
 
       if (response.statusCode == 200) {
@@ -95,7 +100,12 @@ class CartController extends GetxController {
       'uuid': cookies.read('uuid'),
       'product_id': '$productId',
       'quantity': count
-    });
+    },
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Bearer ${cookies.read('token')}",
+          }));
     print(response.data);
 
     if (response.statusCode == 200) {
