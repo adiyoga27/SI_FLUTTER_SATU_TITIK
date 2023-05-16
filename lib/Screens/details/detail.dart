@@ -64,7 +64,7 @@ class DetailPage extends StatelessWidget {
     ) : Container(
             width: 100,
             height: 56,
-            child: homeCtrl.orderModel.cart.length.obs > 0 ? RawMaterialButton(
+            child: homeCtrl.orderModel.cart.length > 0 ? RawMaterialButton(
               onPressed: () => Get.to(InvoicePage()),
               fillColor: kPrimaryColor,
               shape: RoundedRectangleBorder(

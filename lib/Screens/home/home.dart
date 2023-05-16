@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: kBackground,
       body: Obx(() {
-        bool isLoadingCategory = homeCtrl.isLoadingCategory.value;
+        bool isLoadingCategory = homeCtrl.isLoadingProduct.value;
         bool isLoadingProduct = homeCtrl.isLoadingProduct.value;
         bool isLoadingCart = homeCtrl.isLoadingCart.value;
 
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
       }),
     floatingActionButton: 
     Obx(() {
-        return  homeCtrl.isLoadingCart.value  ? RawMaterialButton(
+        return  homeCtrl.isLoadingCart.value ||  homeCtrl.isLoadingProduct.value || homeCtrl.isLoadingProduct.value ? RawMaterialButton(
                 onPressed: () => Get.to(InvoicePage()),
                 fillColor: kPrimaryColor,
                 shape: RoundedRectangleBorder(

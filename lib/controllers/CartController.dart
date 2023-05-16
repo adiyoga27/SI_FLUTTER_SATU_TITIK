@@ -80,7 +80,7 @@ class CartController extends GetxController {
       if (response.statusCode == 200) {
         final reservasiModel = ReservasiModel.fromJson(response.data['data']);
         cookies.write('uuid', reservasiModel.uuid);
-        Get.offAll(HomePage());
+        Get.to(HomePage());
       }
     } catch (e) {
        print("error data : ${{
@@ -112,11 +112,10 @@ class CartController extends GetxController {
     print(response.data);
 
     if (response.statusCode == 200) {
-    homeController.getOrder();
+      homeController.getOrder();
 
       Fluttertoast.showToast(msg: response.data['message']);
       count = 0;
-    update();
 
     }
     isLoading.value = false;

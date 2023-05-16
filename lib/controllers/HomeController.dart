@@ -17,7 +17,7 @@ class HomeController extends GetxController {
   RxBool isLoadingCart = false.obs;
   RxBool isLoadingProductByCategory = false.obs;
   RxInt selectedCategory = 0.obs;
-   late OrderModel orderModel;
+  late OrderModel orderModel;
   final cookies = GetStorage();
 
   @override
@@ -30,7 +30,6 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
-
     // TODO: implement onReady
     getCategory();
     super.onReady();
@@ -45,17 +44,18 @@ class HomeController extends GetxController {
     print('category');
     isLoadingCategory.value = true;
     final dio = Dio();
-    final response = await dio.get(AppConfig().baseUrl + "/category",);
+    final response = await dio.get(
+      AppConfig().baseUrl + "/category",
+    );
 
     if (response.statusCode == 200) {
       categoryModel.value = (response.data['data'] as List)
           .map((e) => CategoryModel.fromJson(e))
           .toList();
 
-          selectedCategory.value = categoryModel[0].id!;
-          getProductByCategory(categoryModel[0].id!);
-        getOrder();
-
+      selectedCategory.value = categoryModel[0].id!;
+      getProductByCategory(categoryModel[0].id!);
+      getOrder();
     }
     print(response.data['data']);
 
@@ -68,7 +68,9 @@ class HomeController extends GetxController {
 
     isLoadingProduct.value = true;
     final dio = Dio();
-    final response = await dio.get(AppConfig().baseUrl + "/product/"+selectedCategory.value.toString(),);
+    final response = await dio.get(
+      AppConfig().baseUrl + "/product/" + selectedCategory.value.toString(),
+    );
 
     if (response.statusCode == 200) {
       productModel.value = (response.data['data'] as List)
@@ -87,7 +89,9 @@ class HomeController extends GetxController {
     isLoadingProductByCategory.value = true;
 
     final dio = Dio();
-    final response = await dio.get(AppConfig().baseUrl + "/product/"+category_id.toString(),);
+    final response = await dio.get(
+      AppConfig().baseUrl + "/product/" + category_id.toString(),
+    );
 
     if (response.statusCode == 200) {
       productModel.value = (response.data['data'] as List)
@@ -103,27 +107,34 @@ class HomeController extends GetxController {
   void getOrder() async {
     isLoadingCart.value = true;
     try {
-      if(cookies.read('uuid') != null){
-      final dio = Dio();
-      final response = await dio.get(AppConfig().baseUrl + "/order/"+cookies.read('uuid'),
+      if (cookies.read('uuid') != null) {
+        final dio = Dio();
+        final response = await dio.get(
+          AppConfig().baseUrl + "/order/" + cookies.read('uuid'),
         );
 
-      if (response.statusCode == 200) {
-        orderModel = OrderModel.fromJson(response.data['data']);
-      }else{
-        cookies.remove('uuid');
-        Get.offAll(DinningTablePage());
-      }
-      print(response.data['data']);
-      isLoadingCart.value = false;
+        if (response.statusCode == 200) {
+          orderModel = OrderModel.fromJson(response.data['data']);
+        } else {
+          cookies.remove('uuid');
+          isLoadingCart.value = false;
+          update();
 
-    }
+          Get.offAll(DinningTablePage());
+        }
+        print(response.data['data']);
+        isLoadingCart.value = false;
+        update();
+      }
     } catch (e) {
-         cookies.remove('uuid');
-        Get.offAll(DinningTablePage());
+      cookies.remove('uuid');
+      isLoadingCart.value = false;
+      update();
+
+      Get.offAll(DinningTablePage());
     }
-      
-   
+    isLoadingCart.value = false;
+
     update();
   }
 }
