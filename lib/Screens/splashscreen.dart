@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:satutitik/Screens/auth/login.dart';
 import 'package:satutitik/Screens/home/home.dart';
 import 'package:satutitik/Screens/reservasi.dart';
 import 'package:satutitik/controllers/HomeController.dart';
@@ -35,7 +36,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
 
       print(uuid);
       if (uuid == null) {
-        Get.to(ReservasiPage());
+        Get.to(LoginPage());
       } else {
       final homeController = Get.put(HomeController());
       homeController.getOrder();
