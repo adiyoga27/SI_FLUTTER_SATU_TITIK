@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:satutitik/Screens/reservasi/diningtable.dart';
 import 'package:satutitik/controllers/CartController.dart';
 
 class ScanPage extends StatefulWidget {
@@ -22,7 +24,7 @@ class _ScanPageState extends State<ScanPage> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  late final Permission _permission;
+  Permission? _permission;
   PermissionStatus _permissionStatus = PermissionStatus.denied;
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -122,8 +124,11 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   void _listenForPermissionStatus() async {
-    final status = await _permission.status;
-    setState(() => _permissionStatus = status);
+    Timer(Duration(seconds: 3), () async {
+      final status = await _permission!.status;
+      setState(() => _permissionStatus = status);
+    });
+    
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -154,7 +159,8 @@ class _ScanPageState extends State<ScanPage> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-        cartCtrl.reservasi(scanData.code.toString());
+        // cartCtrl.reservasi(scanData.code.toString());
+      Get.to(DinningTablePage());
 
       // setState(() {
       //   result = scanData;

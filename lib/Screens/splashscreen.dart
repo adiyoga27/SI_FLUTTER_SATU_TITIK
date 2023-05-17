@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/auth/login.dart';
 import 'package:satutitik/Screens/home/home.dart';
+import 'package:satutitik/Screens/qr/scan.dart';
 import 'package:satutitik/Screens/reservasi.dart';
 import 'package:satutitik/Screens/reservasi/diningtable.dart';
 import 'package:satutitik/controllers/HomeController.dart';
@@ -37,7 +38,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
 
       print(uuid);
       if (uuid == null) {
-        Get.to(DinningTablePage());
+        Get.to(ScanPage());
       } else {
       final homeController = Get.put(HomeController());
       homeController.getOrder();
