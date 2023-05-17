@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:satutitik/Screens/details/widget/food_quantity.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/CartController.dart';
 import 'package:satutitik/controllers/HomeController.dart';
 import 'package:satutitik/helpers/formating_helper.dart';
-import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
 import 'package:satutitik/models/product.dart';
 
@@ -34,22 +32,24 @@ class FoodDetail extends StatelessWidget {
               height: 15,
             ),
             Text(
-                        CurrencyFormat.convertToIdr(food!.price, 0).toString(),
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-          
+              CurrencyFormat.convertToIdr(food!.price, 0).toString(),
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+
             SizedBox(
               height: 39,
             ),
-           
-           Obx(() {
-            return ctrlHome.isLoadingCart.value || ctrlHome.orderModel.status != 'pending' ? SizedBox() : GetBuilder<CartController>(builder: (context) {
-              return FoodQuantity(food: food, qty: controller.count);
-            });
-           }  )
-           ,
+
+            Obx(() {
+              return ctrlHome.isLoadingCart.value ||
+                      ctrlHome.orderModel!.status != 'pending'
+                  ? SizedBox()
+                  : GetBuilder<CartController>(builder: (context) {
+                      return FoodQuantity(food: food, qty: controller.count);
+                    });
+            }),
 
             // Row(
             //   children: [
@@ -102,18 +102,18 @@ class FoodDetail extends StatelessWidget {
         ));
   }
 
-  _buildIconText(IconData icon, Color color, String text) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          color: color,
-        ),
-        Text(
-          text,
-          style: TextStyle(fontSize: 16),
-        ),
-      ],
-    );
-  }
+  // _buildIconText(IconData icon, Color color, String text) {
+  //   return Row(
+  //     children: [
+  //       Icon(
+  //         icon,
+  //         color: color,
+  //       ),
+  //       Text(
+  //         text,
+  //         style: TextStyle(fontSize: 16),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:satutitik/Screens/cart/invoice.dart';
 import 'package:satutitik/Screens/home/widget/food_list.dart';
 import 'package:satutitik/Screens/home/widget/food_list_view.dart';
 import 'package:satutitik/Screens/home/widget/restaurant_info.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/HomeController.dart';
-import 'package:satutitik/models/restaurant.dart';
-import 'package:satutitik/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,29 +20,27 @@ class _HomePageState extends State<HomePage> {
   final homeCtrl = Get.put(HomeController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     homeCtrl.getProduct();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackground,
-      body: Obx(() {
-        bool isLoadingCategory = homeCtrl.isLoadingProduct.value;
-        bool isLoadingProduct = homeCtrl.isLoadingProduct.value;
-        bool isLoadingCart = homeCtrl.isLoadingCart.value;
-
-        return isLoadingCategory || isLoadingProduct || isLoadingCart
-            ? Center(
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : Column(
+    return Obx(() {
+      bool isLoadingCategory = homeCtrl.isLoadingProduct.value;
+      bool isLoadingProduct = homeCtrl.isLoadingProduct.value;
+      bool isLoadingCart = homeCtrl.isLoadingCart.value;
+      return isLoadingCart || isLoadingCategory || isLoadingProduct
+          ? Center(
+              child: Container(
+                height: 50.0,
+                width: 50.0,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Scaffold(
+              backgroundColor: kBackground,
+              body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // CustomAppBar(
@@ -63,7 +58,6 @@ class _HomePageState extends State<HomePage> {
                       homeCtrl.getProductByCategory(categoryId);
                       setState(() {
                         homeCtrl.selectedCategory.value = categoryId;
-                        print(index);
                       });
                     },
                   ),
@@ -77,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       : Expanded(
                           child: FoodListView(
-                            orderModel: homeCtrl.orderModel,
+                          orderModel: homeCtrl.orderModel,
                           selected: homeCtrl.selectedCategory.value,
                           callback: (int index) {
                             setState(() {
@@ -115,59 +109,64 @@ class _HomePageState extends State<HomePage> {
                   //   ),
                   // )
                 ],
-              );
-      }),
-    floatingActionButton: 
-    Obx(() {
-        return  homeCtrl.isLoadingCart.value ||  homeCtrl.isLoadingProduct.value || homeCtrl.isLoadingProduct.value ? RawMaterialButton(
-                onPressed: () => Get.to(InvoicePage()),
-                fillColor: kPrimaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
-                elevation: 2,
-                child:  Icon(
-                      Icons.shopping_bag_outlined,
-                      color: Colors.black,
-                      size: 30,
-                    ),
-             
- 
-    ) :  Container(
-              width: 100,
-              height: 56,
-              child:   RawMaterialButton(
-                onPressed: () => Get.to(InvoicePage()),
-                fillColor: kPrimaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
-                elevation: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(
-                      Icons.shopping_bag_outlined,
-                      color: Colors.black,
-                      size: 30,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          color: Colors.white, shape: BoxShape.circle),
-                      child: Text(
-                        homeCtrl.orderModel.cart.length.obs.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+              ),
+              floatingActionButton: homeCtrl.isLoadingCart.value ||
+                      homeCtrl.isLoadingProduct.value ||
+                      homeCtrl.isLoadingProduct.value
+                  ? RawMaterialButton(
+                      onPressed: () => Get.to(InvoicePage()),
+                      fillColor: kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50)),
+                      elevation: 2,
+                      child: Icon(
+                        Icons.shopping_bag_outlined,
+                        color: Colors.black,
+                        size: 30,
                       ),
                     )
-                  ],
-                ),
-             
- 
-    ));
-    })
- );
+                  : Container(
+                      width: 100,
+                      height: 56,
+                      child: RawMaterialButton(
+                        onPressed: () => {
+                          if (homeCtrl.orderModel!.cart.length > 0)
+                            {Get.to(InvoicePage())}
+                          else
+                            {
+                              Fluttertoast.showToast(
+                                  msg:
+                                      'Silahkan pilih produk yang dibeli terlebih dahulu!!')
+                            }
+                        },
+                        fillColor: kPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        elevation: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(
+                              Icons.shopping_bag_outlined,
+                              color: Colors.black,
+                              size: 30,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white, shape: BoxShape.circle),
+                              child: Text(
+                                homeCtrl.orderModel!.cart.length.toString(),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )));
+    });
   }
 }

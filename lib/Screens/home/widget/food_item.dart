@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/helpers/formating_helper.dart';
-import 'package:satutitik/models/food.dart';
 import 'package:satutitik/models/product.dart';
 
 class FoodItem extends StatelessWidget {
@@ -61,9 +57,9 @@ class FoodItem extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                     
                       Text(
-                        CurrencyFormat.convertToIdr(productModel.price, 0).toString(),
+                        CurrencyFormat.convertToIdr(productModel.price, 0)
+                            .toString(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

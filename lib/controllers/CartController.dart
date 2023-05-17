@@ -22,7 +22,6 @@ class CartController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     // cookies.write('uuid', '410cccf8-3ca4-4f24-b973-267fc567f729');
     Get.put(HomeController());
@@ -69,82 +68,74 @@ class CartController extends GetxController {
   void reservasi(String uuid) async {
     final dio = Dio();
     try {
-      final response = await dio.post(AppConfig().baseUrl + "/reservasi", data: {
-        'table_uuid': uuid,
-        'customer_name': '${cookies.read('name')}',
-        'customer_phone': '${cookies.read('phone')}'
-      },
-         );
-
+      // print({
+      //   'table_uuid': uuid,
+      //   'customer_name': 'Customer',
+      //   'customer_phone': '0841683'
+      // }.toString());
+      final response = await dio.post(AppConfig().baseUrl + "/reservasi",
+          data: {
+            'table_uuid': uuid,
+            'customer_name': "Customer",
+            'customer_phone': "085792486889"
+          },
+          options: Options(headers: {
+            "Content-Type": "application/json",
+          }));
 
       if (response.statusCode == 200) {
         final reservasiModel = ReservasiModel.fromJson(response.data['data']);
+
         cookies.write('uuid', reservasiModel.uuid);
         Get.to(HomePage());
       }
     } catch (e) {
-       print("error data : ${{
-        'table_uuid': uuid,
-        'customer_name': '${cookies.read('name')}',
-        'customer_phone': '${cookies.read('phone')}'
-      }.toString()}");
-
-       print("error : ${e.toString()}");
-           Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
-
+      // print(e.toString());
+      Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
     }
-    
   }
 
   void addToCart(int productId) async {
     isLoading.value = true;
     final dio = Dio();
-    final response = await dio.post(AppConfig().baseUrl + "/add-cart", data: {
-      'uuid': cookies.read('uuid'),
-      'product_id': '$productId',
-      'quantity': count
-    },
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization":
-                "Bearer ${cookies.read('token')}",
-          }));
-    print(response.data);
+    final response = await dio.post(AppConfig().baseUrl + "/add-cart",
+        data: {
+          'uuid': cookies.read('uuid'),
+          'product_id': '$productId',
+          'quantity': count
+        },
+        options: Options(headers: {
+          "Content-Type": "application/json",
+        }));
+    // print(response.data);
 
     if (response.statusCode == 200) {
       homeController.getOrder();
 
       Fluttertoast.showToast(msg: response.data['message']);
       count = 0;
-
     }
     isLoading.value = false;
 
-  
     update();
-       Get.back();
+    Get.back();
 
     // ignore: unused_element
-
   }
 
   void checkout() async {
     final dio = Dio();
     try {
-      final response = await dio.post(AppConfig().baseUrl + "/checkout/${cookies.read('uuid')}");
+      final response = await dio
+          .post(AppConfig().baseUrl + "/checkout/${cookies.read('uuid')}");
       if (response.statusCode == 200) {
         final ctrlHome = Get.put(HomeController());
         ctrlHome.getOrder();
         Get.to(InvoicePage());
-        
-    
       }
     } catch (e) {
-     
-       print("error : ${e.toString()}");
-           Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
-
+      // print("error : ${e.toString()}");
+      Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
     }
-    
   }
 }

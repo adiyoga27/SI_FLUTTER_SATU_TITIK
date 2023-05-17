@@ -1,16 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:satutitik/Screens/auth/login.dart';
 import 'package:satutitik/Screens/home/home.dart';
 import 'package:satutitik/Screens/qr/scan.dart';
-import 'package:satutitik/Screens/reservasi.dart';
-import 'package:satutitik/Screens/reservasi/diningtable.dart';
 import 'package:satutitik/controllers/HomeController.dart';
 
 class SplashscreenPage extends StatefulWidget {
@@ -25,23 +19,20 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _initialize();
   }
 
   _initialize() async {
-    print('adad');
     Timer(Duration(seconds: 3), () async {
       final uuid = await cookies.read('uuid');
 
-      print(uuid);
       if (uuid == null) {
         Get.to(ScanPage());
       } else {
-      final homeController = Get.put(HomeController());
-      homeController.getOrder();
+        final homeController = Get.put(HomeController());
+        homeController.getOrder();
         Get.to(HomePage());
       }
     });

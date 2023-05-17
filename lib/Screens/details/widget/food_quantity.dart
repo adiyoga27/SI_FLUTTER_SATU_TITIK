@@ -1,12 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/controllers/CartController.dart';
-import 'package:satutitik/controllers/HomeController.dart';
 
-import 'package:satutitik/models/food.dart';
 import 'package:get/get.dart';
 import 'package:satutitik/models/product.dart';
 
@@ -42,8 +37,7 @@ class FoodQuantity extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () => showAlertDialog(
-                          context, food!),
+                      onTap: () => showAlertDialog(context, food!),
                       child: Text(
                         'Add to Cart',
                         style: TextStyle(
@@ -115,7 +109,6 @@ class FoodQuantity extends StatelessWidget {
       child: Text("Lanjutkan"),
       onPressed: () {
         controller.addToCart(productModel.id!.toInt());
-       
       },
     );
 

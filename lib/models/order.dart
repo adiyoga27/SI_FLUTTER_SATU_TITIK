@@ -1,40 +1,39 @@
-
 class OrderModel {
-    String diningTable;
-    String user;
-    String orderNumber;
-    String customerName;
-    String customerHp;
-    int totalPrice;
-    int discount;
-    int tax;
-    int totalPayment;
-    String status;
-    String paymentMethod;
-    dynamic paymentNumber;
-    dynamic note;
-    String uuid;
-    List<Cart> cart;
+  String diningTable;
+  String user;
+  String orderNumber;
+  String customerName;
+  String customerHp;
+  int totalPrice;
+  int discount;
+  int tax;
+  int totalPayment;
+  String status;
+  String paymentMethod;
+  dynamic paymentNumber;
+  dynamic note;
+  String uuid;
+  List<Cart> cart;
 
-    OrderModel({
-        required this.diningTable,
-        required this.user,
-        required this.orderNumber,
-        required this.customerName,
-        required this.customerHp,
-        required this.totalPrice,
-        required this.discount,
-        required this.tax,
-        required this.totalPayment,
-        required this.status,
-        required this.paymentMethod,
-        this.paymentNumber,
-        this.note,
-        required this.uuid,
-        required this.cart,
-    });
+  OrderModel({
+    required this.diningTable,
+    required this.user,
+    required this.orderNumber,
+    required this.customerName,
+    required this.customerHp,
+    required this.totalPrice,
+    required this.discount,
+    required this.tax,
+    required this.totalPayment,
+    required this.status,
+    required this.paymentMethod,
+    this.paymentNumber,
+    this.note,
+    required this.uuid,
+    required this.cart,
+  });
 
-    factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         diningTable: json["dining_table"],
         user: json["user"],
         orderNumber: json["order_number"],
@@ -50,9 +49,9 @@ class OrderModel {
         note: json["note"],
         uuid: json["uuid"],
         cart: List<Cart>.from(json["cart"].map((x) => Cart.fromJson(x))),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "dining_table": diningTable,
         "user": user,
         "order_number": orderNumber,
@@ -68,41 +67,41 @@ class OrderModel {
         "note": note,
         "uuid": uuid,
         "cart": List<dynamic>.from(cart.map((x) => x.toJson())),
-    };
+      };
 }
 
 class Cart {
-    int productId;
-    String name;
-    int price;
-    int quantity;
-    int discount;
-    int totalPrice;
+  int productId;
+  String name;
+  int price;
+  int quantity;
+  int discount;
+  int totalPrice;
 
-    Cart({
-        required this.productId,
-        required this.name,
-        required this.price,
-        required this.quantity,
-        required this.discount,
-        required this.totalPrice,
-    });
+  Cart({
+    required this.productId,
+    required this.name,
+    required this.price,
+    required this.quantity,
+    required this.discount,
+    required this.totalPrice,
+  });
 
-    factory Cart.fromJson(Map<String, dynamic> json) => Cart(
+  factory Cart.fromJson(Map<String, dynamic> json) => Cart(
         productId: json["product_id"],
         name: json["name"],
         price: json["price"],
         quantity: json["quantity"],
         discount: json["discount"],
         totalPrice: json["total_price"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "product_id": productId,
         "name": name,
         "price": price,
         "quantity": quantity,
         "discount": discount,
         "total_price": totalPrice,
-    };
+      };
 }

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:satutitik/Screens/reservasi.dart';
-import 'package:satutitik/Screens/reservasi/diningtable.dart';
+import 'package:satutitik/Screens/qr/scan.dart';
 import 'package:satutitik/config/app_config.dart';
 import 'package:satutitik/models/category.dart';
 import 'package:satutitik/models/order.dart';
@@ -17,12 +16,12 @@ class HomeController extends GetxController {
   RxBool isLoadingCart = false.obs;
   RxBool isLoadingProductByCategory = false.obs;
   RxInt selectedCategory = 0.obs;
-  late OrderModel orderModel;
+  OrderModel? orderModel;
   final cookies = GetStorage();
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    getOrder();
 
     getCategory();
     super.onInit();
@@ -30,7 +29,8 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
-    // TODO: implement onReady
+    getOrder();
+
     getCategory();
     super.onReady();
   }
@@ -41,7 +41,6 @@ class HomeController extends GetxController {
   }
 
   void getCategory() async {
-    print('category');
     isLoadingCategory.value = true;
     final dio = Dio();
     final response = await dio.get(
@@ -57,15 +56,13 @@ class HomeController extends GetxController {
       getProductByCategory(categoryModel[0].id!);
       getOrder();
     }
-    print(response.data['data']);
+    // print(response.data['data']);
 
     isLoadingCategory.value = false;
     update();
   }
 
   void getProduct() async {
-    print('product');
-
     isLoadingProduct.value = true;
     final dio = Dio();
     final response = await dio.get(
@@ -77,20 +74,17 @@ class HomeController extends GetxController {
           .map((e) => ProductModel.fromJson(e))
           .toList();
     }
-    print(response.data['data']);
 
     isLoadingProduct.value = false;
     update();
   }
 
-  void getProductByCategory(int category_id) async {
-    print('product');
-
+  void getProductByCategory(int categoryId) async {
     isLoadingProductByCategory.value = true;
 
     final dio = Dio();
     final response = await dio.get(
-      AppConfig().baseUrl + "/product/" + category_id.toString(),
+      AppConfig().baseUrl + "/product/" + categoryId.toString(),
     );
 
     if (response.statusCode == 200) {
@@ -98,7 +92,6 @@ class HomeController extends GetxController {
           .map((e) => ProductModel.fromJson(e))
           .toList();
     }
-    print(response.data['data']);
 
     isLoadingProductByCategory.value = false;
     update();
@@ -115,14 +108,15 @@ class HomeController extends GetxController {
 
         if (response.statusCode == 200) {
           orderModel = OrderModel.fromJson(response.data['data']);
+          isLoadingCart.value = false;
+          update();
         } else {
           cookies.remove('uuid');
           isLoadingCart.value = false;
           update();
 
-          Get.offAll(DinningTablePage());
+          Get.offAll(ScanPage());
         }
-        print(response.data['data']);
         isLoadingCart.value = false;
         update();
       }
@@ -131,7 +125,7 @@ class HomeController extends GetxController {
       isLoadingCart.value = false;
       update();
 
-      Get.offAll(DinningTablePage());
+      Get.offAll(ScanPage());
     }
     isLoadingCart.value = false;
 

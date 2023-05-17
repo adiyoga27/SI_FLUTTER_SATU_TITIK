@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:satutitik/Screens/auth/login.dart';
-import 'package:satutitik/Screens/cart/invoice.dart';
 import 'package:get/get.dart';
 import 'package:satutitik/Screens/home/home.dart';
-import 'package:satutitik/Screens/qr/scan.dart';
 import 'package:dio/dio.dart';
 import 'package:satutitik/config/app_config.dart';
-import 'package:satutitik/controllers/HomeController.dart';
 
-import 'package:permission_handler/permission_handler.dart';
-import 'package:satutitik/models/reservasi.dart';
 import 'package:satutitik/models/user.dart';
 
 class AuthController extends GetxController {
@@ -49,27 +44,26 @@ class AuthController extends GetxController {
     }
   }
 
-  
   void registration() async {
     final dio = Dio();
-print("resp:");
-print({
-        'username': '${usernameController.text}',
-        'password': '${passwordController.text}',
-        'name': '${nameController.text}',
-        'email': '${emailController.text}',
-        'hp': '${hpController.text}'
-      }.toString());
+    // print({
+    //   'username': '${usernameController.text}',
+    //   'password': '${passwordController.text}',
+    //   'name': '${nameController.text}',
+    //   'email': '${emailController.text}',
+    //   'hp': '${hpController.text}'
+    // }.toString());
 
     try {
-      final response = await dio.post(AppConfig().baseUrl + "/registration", data: {
+      final response =
+          await dio.post(AppConfig().baseUrl + "/registration", data: {
         'username': '${usernameController.text}',
         'password': '${passwordController.text}',
         'name': '${nameController.text}',
         'email': '${emailController.text}',
         'hp': '${hpController.text}'
       });
-      
+
       if (response.statusCode == 200) {
         Fluttertoast.showToast(msg: '${response.data['message']}');
         Get.offAll(LoginPage());
@@ -77,7 +71,7 @@ print({
         Fluttertoast.showToast(msg: '${response.data['message']}');
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Gagal Login'+e.toString());
+      Fluttertoast.showToast(msg: 'Gagal Login' + e.toString());
     }
   }
 }

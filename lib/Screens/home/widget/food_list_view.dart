@@ -5,8 +5,6 @@ import 'package:satutitik/Screens/home/widget/food_item.dart';
 import 'package:satutitik/models/order.dart';
 import 'package:satutitik/models/product.dart';
 
-import 'package:satutitik/models/restaurant.dart';
-
 class FoodListView extends StatelessWidget {
   final int? selected;
   final Function? callback;
@@ -34,8 +32,9 @@ class FoodListView extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
-                        Get.to(DetailPage(productModel: productModel![index], orderModel: orderModel!));
-                      
+                        Get.to(DetailPage(
+                            productModel: productModel![index],
+                            orderModel: orderModel!));
                       },
                       child: FoodItem(
                         productModel: productModel![index],

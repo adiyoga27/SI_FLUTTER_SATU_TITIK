@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:satutitik/constants/colors.dart';
 import 'package:satutitik/models/category.dart';
-
-import 'package:satutitik/models/restaurant.dart';
 
 class FoodList extends StatelessWidget {
   final int? selected;
@@ -14,7 +11,6 @@ class FoodList extends StatelessWidget {
     this.selected,
     this.callback,
     this.category,
-
   }) : super(key: key);
 
   @override
@@ -31,12 +27,15 @@ class FoodList extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: selected == category![index].id ? kPrimaryColor : Colors.white,
+                    color: selected == category![index].id
+                        ? kPrimaryColor
+                        : Colors.white,
                   ),
                   child: Text(category![index].name!,
                       style: TextStyle(
-                          color:
-                              selected == category![index].id ? Colors.white : Colors.black,
+                          color: selected == category![index].id
+                              ? Colors.white
+                              : Colors.black,
                           fontWeight: FontWeight.bold)),
                 ),
               ),

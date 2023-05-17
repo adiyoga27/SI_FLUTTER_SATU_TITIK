@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:satutitik/constants/colors.dart';
 
 class ProductCard extends StatelessWidget {
@@ -51,7 +50,7 @@ class ProductCard extends StatelessWidget {
                     children: [
                       TextSpan(
                           text: " x${qty!}",
-                          style: Theme.of(context).textTheme.bodyText1),
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ],
                   ),
                 )

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:satutitik/Screens/qr/scan.dart';
 import 'package:satutitik/controllers/CartController.dart';
 
 class ReservasiPage extends StatefulWidget {
@@ -16,7 +12,7 @@ class ReservasiPage extends StatefulWidget {
 
 class _ReservasiPageState extends State<ReservasiPage> {
   final controller = Get.put(CartController());
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +25,9 @@ class _ReservasiPageState extends State<ReservasiPage> {
               right: Get.width / 3,
               left: Get.width / 3,
               child: Container(
-                decoration:BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   width: 100.0,
                   height: 100.0,
                   child: Image.asset('assets/images/res_logo.png'))),
@@ -68,17 +64,14 @@ class _ReservasiPageState extends State<ReservasiPage> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 16),
                                   child: TextFormField(
-                                  keyboardType: TextInputType.number,
-          
-                                  controller: controller.phoneController,
-          
-                                      inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-          
-                                    LengthLimitingTextInputFormatter(14),
-                                  ],
-                                    decoration:
-                                        const InputDecoration(hintText: "Phone"),
+                                    keyboardType: TextInputType.number,
+                                    controller: controller.phoneController,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(14),
+                                    ],
+                                    decoration: const InputDecoration(
+                                        hintText: "Phone"),
                                   ),
                                 ),
                               ],
@@ -87,9 +80,11 @@ class _ReservasiPageState extends State<ReservasiPage> {
                           Padding(
                             padding: const EdgeInsets.only(top: 16),
                             child: ElevatedButton(
-                              style:  ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-                                ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.orange),
+                              ),
                               child: const Text("Scan QR Meja"),
                               onPressed: () => controller.gotToScan(),
                             ),
