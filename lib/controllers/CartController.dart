@@ -23,7 +23,6 @@ class CartController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // cookies.write('uuid', '410cccf8-3ca4-4f24-b973-267fc567f729');
     Get.put(HomeController());
   }
 

@@ -32,9 +32,13 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
       final uuid = await cookies.read('uuid');
 
       print(uuid);
+      if (uuid == null) {
+        return Get.off(ScanPage());
+      }
       try {
         final dio = Dio();
-        final response = await dio.get(AppConfig().baseUrl + "/order/" + uuid);
+        final response = await dio.get(AppConfig().baseUrl + "/order/$uuid");
+        print(AppConfig().baseUrl + "/order/" + uuid);
         if (response.statusCode == 200) {
           // ignore: unrelated_type_equality_checks
           if (response.data['status'] == true) {

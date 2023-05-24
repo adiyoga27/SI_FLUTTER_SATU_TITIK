@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:satutitik/Screens/home/home.dart';
 import 'package:satutitik/config/app_config.dart';
+import 'package:satutitik/controllers/HomeController.dart';
 import 'package:satutitik/models/tablebook.dart';
 
 class ReservasiController extends GetxController {
@@ -56,6 +57,8 @@ class ReservasiController extends GetxController {
 
       if (response.statusCode == 200) {
         cookies.write('uuid', response.data['data']['uuid']);
+        final ctrlHome = Get.put(HomeController());
+        ctrlHome.getAll();
         Get.to(HomePage());
       } else {
         Fluttertoast.showToast(msg: response.data['message']);

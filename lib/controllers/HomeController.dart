@@ -1,8 +1,7 @@
-import 'dart:html';
-
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:satutitik/Screens/qr/scan.dart';
+import 'package:satutitik/Screens/splashscreen.dart';
 import 'package:satutitik/config/app_config.dart';
 import 'package:satutitik/models/category.dart';
 import 'package:satutitik/models/order.dart';
@@ -51,6 +50,7 @@ class HomeController extends GetxController {
       AppConfig().baseUrl + "/category",
     );
 
+    print(response);
     if (response.statusCode == 200) {
       categoryModel.value = (response.data['data'] as List)
           .map((e) => CategoryModel.fromJson(e))
@@ -101,30 +101,33 @@ class HomeController extends GetxController {
   }
 
   void getOrder() async {
+    print('adasd');
     isLoadingCart.value = true;
     try {
       if (cookies.read('uuid') != null) {
         final dio = Dio();
         final response = await dio.get(
-          AppConfig().baseUrl + "/order/" + cookies.read('uuid'),
+          AppConfig().baseUrl + "/order/${cookies.read('uuid')}",
         );
         if (response.data['status'] == true) {
-          print("Lolos :" + response.toString());
-
           orderModel = OrderModel.fromJson(response.data['data']);
           isLoadingCart.value = false;
           update();
         } else {
-          print("Tidak Lolos :" + response.toString());
-
           cookies.remove('uuid');
           isLoadingCart.value = false;
           update();
 
-          Get.to(ScanPage());
+          Get.to(SplashscreenPage());
         }
       }
     } catch (e) {
+      if (e is DioError) {
+        //handle DioError here by error type or by error code
+        if (e.response!.statusCode == 400) {
+          return Get.offAll(ScanPage());
+        }
+      }
       isLoadingCart.value = false;
       update();
     }

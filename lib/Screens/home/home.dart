@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: kBackground,
         body: Obx(() {
-          bool isLoadingCategory = homeCtrl.isLoadingProduct.value;
+          bool isLoadingCategory = homeCtrl.isLoadingCategory.value;
           bool isLoadingProduct = homeCtrl.isLoadingProductByCategory.value;
           bool isLoadingCart = homeCtrl.isLoadingCart.value;
           return Column(
