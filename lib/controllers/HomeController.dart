@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:satutitik/Screens/qr/scan.dart';
@@ -11,10 +13,10 @@ class HomeController extends GetxController {
   var count = 0;
   RxList<ProductModel> productModel = <ProductModel>[].obs;
   RxList<CategoryModel> categoryModel = <CategoryModel>[].obs;
-  RxBool isLoadingCategory = false.obs;
-  RxBool isLoadingProduct = false.obs;
-  RxBool isLoadingCart = false.obs;
-  RxBool isLoadingProductByCategory = false.obs;
+  RxBool isLoadingCategory = true.obs;
+  RxBool isLoadingProduct = true.obs;
+  RxBool isLoadingCart = true.obs;
+  RxBool isLoadingProductByCategory = true.obs;
   RxInt selectedCategory = 0.obs;
   OrderModel? orderModel;
   final cookies = GetStorage();
@@ -22,22 +24,24 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     getOrder();
-
     getCategory();
     super.onInit();
   }
 
   @override
   void onReady() {
-    getOrder();
-
-    getCategory();
+    getAll();
     super.onReady();
   }
 
   void increment() {
     count++;
     update();
+  }
+
+  void getAll() {
+    getOrder();
+    getCategory();
   }
 
   void getCategory() async {
@@ -54,7 +58,6 @@ class HomeController extends GetxController {
 
       selectedCategory.value = categoryModel[0].id!;
       getProductByCategory(categoryModel[0].id!);
-      getOrder();
     }
     // print(response.data['data']);
 
@@ -81,7 +84,7 @@ class HomeController extends GetxController {
 
   void getProductByCategory(int categoryId) async {
     isLoadingProductByCategory.value = true;
-
+    selectedCategory.value = categoryId;
     final dio = Dio();
     final response = await dio.get(
       AppConfig().baseUrl + "/product/" + categoryId.toString(),
@@ -105,30 +108,25 @@ class HomeController extends GetxController {
         final response = await dio.get(
           AppConfig().baseUrl + "/order/" + cookies.read('uuid'),
         );
+        if (response.data['status'] == true) {
+          print("Lolos :" + response.toString());
 
-        if (response.statusCode == 200) {
           orderModel = OrderModel.fromJson(response.data['data']);
           isLoadingCart.value = false;
           update();
         } else {
+          print("Tidak Lolos :" + response.toString());
+
           cookies.remove('uuid');
           isLoadingCart.value = false;
           update();
 
-          Get.offAll(ScanPage());
+          Get.to(ScanPage());
         }
-        isLoadingCart.value = false;
-        update();
       }
     } catch (e) {
-      cookies.remove('uuid');
       isLoadingCart.value = false;
       update();
-
-      Get.offAll(ScanPage());
     }
-    isLoadingCart.value = false;
-
-    update();
   }
 }

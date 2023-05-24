@@ -47,7 +47,7 @@ class _DinningTablePageState extends State<DinningTablePage> {
                             "Customer " +
                                 controller.bookTableModel[i].name.toString());
                         cookies.write('phone', "085792486889");
-                        ctrlCart.reservasi(controller.bookTableModel[i].uuid);
+                        // ctrlCart.reservasi(controller.bookTableModel[i].uuid);
                       }
                     },
                     child: Card(

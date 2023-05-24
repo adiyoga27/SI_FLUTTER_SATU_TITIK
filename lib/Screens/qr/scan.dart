@@ -8,6 +8,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:satutitik/controllers/CartController.dart';
+import 'package:satutitik/controllers/ReservasiController.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({Key? key}) : super(key: key);
@@ -17,6 +18,8 @@ class ScanPage extends StatefulWidget {
 }
 
 class _ScanPageState extends State<ScanPage> {
+  final cartReservasi = Get.put(ReservasiController());
+
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -29,7 +32,7 @@ class _ScanPageState extends State<ScanPage> {
   void initState() {
     super.initState();
 
-    _listenForPermissionStatus();
+    // _listenForPermissionStatus();
   }
 
   @override
@@ -146,19 +149,20 @@ class _ScanPageState extends State<ScanPage> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    final cartCtrl = Get.put(CartController());
+  void _onQRViewCreated(QRViewController ctrlQr) {
+    // // setState(() {
+    // //   this.controller = controller;
+    // // });
+    ctrlQr.scannedDataStream.listen((scanData) {
+      // Timer(Duration(seconds: 5), () {
+      cartReservasi.reservasi(scanData.code.toString());
+      print(scanData.code.toString());
+      //     // cartCtrl.reservasi(scanData.code.toString());
+      //   });
+      //   // Get.to(Sca());
 
-    setState(() {
-      this.controller = controller;
-    });
-    controller.scannedDataStream.listen((scanData) {
-      cartCtrl.reservasi(scanData.code.toString());
-      Timer(Duration(seconds: 5), () {});
-      // Get.to(Sca());
-
-      // setState(() {
-      //   result = scanData;
+      //   // setState(() {
+      //   //   result = scanData;
       // });
     });
   }

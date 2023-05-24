@@ -43,62 +43,55 @@ class DetailPage extends StatelessWidget {
               )
             ],
           ),
-        ),
-        floatingActionButton: Obx(() {
-          return cartCtrl.isLoading.value
-              ? RawMaterialButton(
-                  onPressed: () => Get.to(InvoicePage()),
-                  fillColor: kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50)),
-                  elevation: 2,
-                  child: Icon(
-                    Icons.shopping_bag_outlined,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                )
-              : Container(
-                  width: 100,
-                  height: 56,
-                  child: homeCtrl.orderModel!.cart.length > 0
-                      ? RawMaterialButton(
-                          onPressed: () => Get.to(InvoicePage()),
-                          fillColor: kPrimaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50)),
-                          elevation: 2,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Icon(
-                                Icons.shopping_bag_outlined,
-                                color: Colors.black,
-                                size: 30,
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle),
-                                child: Text(
-                                  homeCtrl.orderModel!.cart.length.obs
-                                      .toString(),
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      : Icon(
-                          Icons.shopping_bag_outlined,
-                          color: Colors.black,
-                          size: 30,
-                        ));
-        }));
+        ));
+    // floatingActionButton: Obx(() {
+    //   bool isLoading = cartCtrl.isLoading.value;
+
+    //   return isLoading
+    //       ? RawMaterialButton(
+    //           onPressed: () => {},
+    //           fillColor: kPrimaryColor,
+    //           shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(50)),
+    //           elevation: 2,
+    //         )
+    //       : Container(
+    //           width: 100,
+    //           height: 56,
+    //           child: homeCtrl.orderModel!.cart.length > 0
+    //               ? RawMaterialButton(
+    //                   onPressed: () => Get.to(InvoicePage()),
+    //                   fillColor: kPrimaryColor,
+    //                   shape: RoundedRectangleBorder(
+    //                       borderRadius: BorderRadius.circular(50)),
+    //                   elevation: 2,
+    //                   child: Row(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //                     children: [
+    //                       Icon(
+    //                         Icons.shopping_bag_outlined,
+    //                         color: Colors.black,
+    //                         size: 30,
+    //                       ),
+    //                       Container(
+    //                         padding: EdgeInsets.all(15),
+    //                         decoration: BoxDecoration(
+    //                             color: Colors.white,
+    //                             shape: BoxShape.circle),
+    //                         child: Text(
+    //                           homeCtrl.orderModel!.cart.length.obs
+    //                               .toString(),
+    //                           style: TextStyle(
+    //                             color: Colors.black,
+    //                             fontSize: 18,
+    //                             fontWeight: FontWeight.bold,
+    //                           ),
+    //                         ),
+    //                       )
+    //                     ],
+    //                   ),
+    //                 )
+    //               : SizedBox());
+    // }));
   }
 }

@@ -65,36 +65,6 @@ class CartController extends GetxController {
     Get.to(ScanPage());
   }
 
-  void reservasi(String uuid) async {
-    final dio = Dio();
-    try {
-      // print({
-      //   'table_uuid': uuid,
-      //   'customer_name': 'Customer',
-      //   'customer_phone': '0841683'
-      // }.toString());
-      final response = await dio.post(AppConfig().baseUrl + "/reservasi",
-          data: {
-            'table_uuid': uuid,
-            'customer_name': "Customer",
-            'customer_phone': "085792486889"
-          },
-          options: Options(headers: {
-            "Content-Type": "application/json",
-          }));
-
-      if (response.statusCode == 200) {
-        final reservasiModel = ReservasiModel.fromJson(response.data['data']);
-
-        cookies.write('uuid', reservasiModel.uuid);
-        Get.to(HomePage());
-      }
-    } catch (e) {
-      // print(e.toString());
-      Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
-    }
-  }
-
   void addToCart(int productId) async {
     isLoading.value = true;
     final dio = Dio();
@@ -118,7 +88,6 @@ class CartController extends GetxController {
     isLoading.value = false;
 
     update();
-    Get.back();
 
     // ignore: unused_element
   }
@@ -128,6 +97,7 @@ class CartController extends GetxController {
     try {
       final response = await dio
           .post(AppConfig().baseUrl + "/checkout/${cookies.read('uuid')}");
+      print("/checkout/${cookies.read('uuid')}");
       if (response.statusCode == 200) {
         final ctrlHome = Get.put(HomeController());
         ctrlHome.getOrder();
@@ -136,6 +106,22 @@ class CartController extends GetxController {
     } catch (e) {
       // print("error : ${e.toString()}");
       Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
+    }
+  }
+
+  void deleteCart(id) async {
+    final dio = Dio();
+    try {
+      final response =
+          await dio.delete(AppConfig().baseUrl + "/delete-cart/$id");
+      if (response.statusCode == 200) {
+        final ctrlHome = Get.put(HomeController());
+        ctrlHome.getOrder();
+        Get.to(InvoicePage());
+      }
+    } catch (e) {
+      // print("error : ${e.toString()}");
+      Fluttertoast.showToast(msg: 'Gagal menghapus pesanan !');
     }
   }
 }

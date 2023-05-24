@@ -109,6 +109,8 @@ class FoodQuantity extends StatelessWidget {
       child: Text("Lanjutkan"),
       onPressed: () {
         controller.addToCart(productModel.id!.toInt());
+        Get.back();
+        Get.back();
       },
     );
 
