@@ -50,9 +50,10 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
       } catch (e) {
         if (e is DioError) {
           //handle DioError here by error type or by error code
-          if (e.response!.statusCode == 400) {
-            return Get.off(ScanPage());
-          }
+
+          // if (e.response!.statusCode == 400) {
+          return Get.off(ScanPage());
+          // }
         }
         // return Get.off(ScanPage());
       }

@@ -4,9 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:satutitik/config/app_config.dart';
 import 'package:satutitik/controllers/CartController.dart';
 import 'package:satutitik/controllers/ReservasiController.dart';
 
@@ -60,6 +62,23 @@ class _ScanPageState extends State<ScanPage> {
                 style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               )),
+          Positioned(
+              top: 60.0,
+              right: 20.0,
+              child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return BaseUrlPopup();
+                      },
+                    );
+                  },
+                  child: Container(
+                      child: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ))))
           // Positioned(bottom: 10.0, left: 10.0, child: Text('adasdsad')),
           // Expanded(
           //   flex: 1,
@@ -180,5 +199,62 @@ class _ScanPageState extends State<ScanPage> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+}
+
+class BaseUrlPopup extends StatefulWidget {
+  @override
+  _BaseUrlPopupState createState() => _BaseUrlPopupState();
+}
+
+class _BaseUrlPopupState extends State<BaseUrlPopup> {
+  TextEditingController _baseUrlController = TextEditingController();
+  final cookies = GetStorage();
+  @override
+  void initState() {
+    super.initState();
+    _loadBaseUrl();
+  }
+
+  _loadBaseUrl() async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String baseUrl = cookies.read('baseurl') ?? '';
+    String baseUrl = AppConfig().baseUrl ?? '';
+    setState(() {
+      _baseUrlController.text = baseUrl;
+    });
+  }
+
+  _saveBaseUrl(String baseUrl) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setString('base_url', baseUrl);
+    cookies.write('baseurl', baseUrl);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Base URL'),
+      content: TextFormField(
+        controller: _baseUrlController,
+        decoration: InputDecoration(labelText: 'Enter Base URL'),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text('Save'),
+          onPressed: () {
+            String baseUrl = _baseUrlController.text;
+            _saveBaseUrl(baseUrl);
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 }
