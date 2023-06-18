@@ -441,7 +441,7 @@ class InvoicePage extends StatelessWidget {
       }),
       floatingActionButton: Obx(() {
         return ctrlHome.isLoadingCart.value ||
-                ctrlHome.orderModel!.status == 'pending'
+                ctrlHome.orderModel!.isAlreadyOrder == 1
             ? FloatingActionButton.extended(
                 onPressed: () {
                   final ctrlCart = Get.put(CartController());

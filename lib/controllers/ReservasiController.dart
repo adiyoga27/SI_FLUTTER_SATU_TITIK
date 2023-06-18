@@ -64,7 +64,7 @@ class ReservasiController extends GetxController {
         Fluttertoast.showToast(msg: response.data['message']);
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
     }
   }

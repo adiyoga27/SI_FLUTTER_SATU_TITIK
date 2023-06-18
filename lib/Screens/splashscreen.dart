@@ -31,7 +31,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
     Timer(Duration(seconds: 3), () async {
       final uuid = await cookies.read('uuid');
 
-      print(uuid);
+      // print(uuid);
       if (uuid == null) {
         return Get.off(ScanPage());
       }

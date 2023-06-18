@@ -150,9 +150,9 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   void _onQRViewCreated(QRViewController ctrlQr) {
-    // // setState(() {
-    // //   this.controller = controller;
-    // // });
+    setState(() {
+      this.controller = controller;
+    });
     ctrlQr.scannedDataStream.listen((scanData) {
       // Timer(Duration(seconds: 5), () {
       cartReservasi.reservasi(scanData.code.toString());

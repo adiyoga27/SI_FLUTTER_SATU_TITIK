@@ -26,25 +26,25 @@ class FoodQuantity extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment(0.4, 0),
-              child: Container(
-                height: double.maxFinite,
-                width: 120,
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () => showAlertDialog(context, food!),
-                      child: Text(
+              child: InkWell(
+                onTap: () => showAlertDialog(context, food!),
+                child: Container(
+                  height: double.maxFinite,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
                         'Add to Cart',
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
