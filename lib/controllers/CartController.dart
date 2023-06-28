@@ -10,19 +10,24 @@ import 'package:satutitik/config/app_config.dart';
 import 'package:satutitik/controllers/HomeController.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:satutitik/models/diningtable.dart';
 import 'package:satutitik/models/reservasi.dart';
 
 class CartController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  RxList<DiningTableModel> dinningModel = <DiningTableModel>[].obs;
+  String? dinningTableSelect;
   String? uuid;
   final homeController = Get.put(HomeController());
   final cookies = GetStorage();
   RxBool isLoading = false.obs;
+  RxBool isLoadingDrop = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+    fetchDropDownTable();
     Get.put(HomeController());
   }
 
@@ -46,6 +51,39 @@ class CartController extends GetxController {
     Get.to(InvoicePage());
   }
 
+  void goToReservasiTable() async {
+    // cookies.remove('uuid');
+    final dio = Dio();
+    try {
+      // print({
+      //   'table_uuid': dinningTableSelect,
+      //   'customer_name': nameController.text,
+      //   'customer_phone': phoneController.text
+      // }.toString());
+      final response = await dio.post(AppConfig().baseUrl + "/reservasi",
+          data: {
+            'table_uuid': dinningTableSelect,
+            'customer_name': nameController.text,
+            'customer_phone': phoneController.text
+          },
+          options: Options(headers: {
+            "Content-Type": "application/json",
+          }));
+
+      if (response.statusCode == 200) {
+        cookies.write('uuid', response.data['data']['uuid']);
+        final ctrlHome = Get.put(HomeController());
+        ctrlHome.getAll();
+        Get.to(HomePage());
+      } else {
+        Fluttertoast.showToast(msg: response.data['message']);
+      }
+    } catch (e) {
+      // print(e.toString());
+      Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
+    }
+  }
+
   void gotToScan() async {
     cookies.write('name', nameController.text);
     cookies.write('phone', phoneController.text);
@@ -64,14 +102,15 @@ class CartController extends GetxController {
     Get.to(ScanPage());
   }
 
-  void addToCart(int productId) async {
+  void addToCart(int productId, String note) async {
     isLoading.value = true;
     final dio = Dio();
     final response = await dio.post(AppConfig().baseUrl + "/add-cart",
         data: {
           'uuid': cookies.read('uuid'),
           'product_id': '$productId',
-          'quantity': count
+          'quantity': count,
+          'note': note,
         },
         options: Options(headers: {
           "Content-Type": "application/json",
@@ -106,6 +145,24 @@ class CartController extends GetxController {
       // print("error : ${e.toString()}");
       Fluttertoast.showToast(msg: 'Ulangi Scan Barcode');
     }
+  }
+
+  void fetchDropDownTable() async {
+    isLoadingDrop.value = true;
+    final dio = Dio();
+    final response = await dio.get(
+      AppConfig().baseUrl + "/dinning-table",
+    );
+
+    if (response.statusCode == 200) {
+      print(response.data['data']);
+      dinningModel.value = (response.data['data'] as List)
+          .map((e) => DiningTableModel.fromJson(e))
+          .toList();
+    }
+
+    isLoadingDrop.value = false;
+    update();
   }
 
   void deleteCart(id) async {

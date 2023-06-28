@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:satutitik/Screens/reservasi.dart';
 import 'package:satutitik/config/app_config.dart';
 import 'package:satutitik/controllers/CartController.dart';
 import 'package:satutitik/controllers/ReservasiController.dart';
@@ -169,6 +170,8 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   void _onQRViewCreated(QRViewController ctrlQr) {
+    Get.off(ReservasiPage());
+
     setState(() {
       this.controller = controller;
     });

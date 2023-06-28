@@ -94,7 +94,8 @@ class FoodQuantity extends StatelessWidget {
 
   showAlertDialog(BuildContext context, ProductModel productModel) {
     final controller = Get.put(CartController());
-
+    TextEditingController noteController = TextEditingController();
+    String note = "";
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text("Batal Pesan"),
@@ -108,7 +109,8 @@ class FoodQuantity extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white)),
       child: Text("Lanjutkan"),
       onPressed: () {
-        controller.addToCart(productModel.id!.toInt());
+        note = noteController.text ?? "";
+        controller.addToCart(productModel.id!.toInt(), note);
         Get.back();
         Get.back();
       },
@@ -116,9 +118,30 @@ class FoodQuantity extends StatelessWidget {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Apakah anda yakin ?"),
-      content: Text(
-          "Pesanan : \n\n${food!.name} x ${controller.count}\n\nPastikan jumlah pesanan anda sudah benar "),
+      title: Text("Berikut Pesanan Anda"),
+      content: Container(
+        height: 200.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //     "Pesanan : \n\n${food!.name} x ${controller.count}\n\nPastikan jumlah pesanan anda sudah benar "),
+            Text("${food!.name} x ${controller.count}\n\n"),
+            SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              'Note : ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextField(
+                controller: noteController,
+                keyboardType: TextInputType.multiline,
+                maxLines: 4)
+          ],
+        ),
+      ),
       actions: [
         cancelButton,
         continueButton,

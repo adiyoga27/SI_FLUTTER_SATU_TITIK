@@ -4,7 +4,6 @@ class CategoryModel {
     required this.name,
     required this.description,
     required this.image,
-    required this.isActive,
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
@@ -14,7 +13,6 @@ class CategoryModel {
   final String? name;
   final String? description;
   final String? image;
-  final int? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final dynamic deletedAt;
@@ -25,7 +23,6 @@ class CategoryModel {
       name: json["name"],
       description: json["description"],
       image: json["image"],
-      isActive: json["is_active"],
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
       deletedAt: json["deleted_at"],
@@ -37,7 +34,6 @@ class CategoryModel {
         "name": name,
         "description": description,
         "image": image,
-        "is_active": isActive,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "deleted_at": deletedAt,

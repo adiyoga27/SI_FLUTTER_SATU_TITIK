@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:satutitik/config/app_config.dart';
 import 'package:satutitik/controllers/CartController.dart';
+import 'package:satutitik/models/dropdownoption.dart';
 
 class ReservasiPage extends StatefulWidget {
   const ReservasiPage({Key? key}) : super(key: key);
@@ -46,52 +52,77 @@ class _ReservasiPageState extends State<ReservasiPage> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          const Spacer(),
-                          Form(
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  controller: controller.nameController,
-                                  keyboardType: TextInputType.text,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(19),
-                                  ],
-                                  decoration: InputDecoration(hintText: "Name"),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 16),
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    controller: controller.phoneController,
+                      child: Obx(() {
+                        return Column(
+                          children: [
+                            const Spacer(),
+                            Form(
+                              child: Column(
+                                children: [
+                                  controller.isLoadingDrop.value
+                                      ? SizedBox()
+                                      : DropdownButtonFormField(
+                                          value: controller.dinningTableSelect,
+                                          items: controller.dinningModel != null
+                                              ? controller.dinningModel
+                                                  .map((element) =>
+                                                      DropdownMenuItem<String>(
+                                                          value: element.uuid,
+                                                          child: Text(
+                                                              element.name)))
+                                                  .toList()
+                                              : [],
+                                          decoration: InputDecoration(
+                                            labelText: 'Select a table',
+                                          ),
+                                          onChanged: (value) {
+                                            print(value);
+                                            controller.dinningTableSelect =
+                                                value as String?;
+                                          }),
+                                  TextFormField(
+                                    controller: controller.nameController,
+                                    keyboardType: TextInputType.text,
                                     inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly,
-                                      LengthLimitingTextInputFormatter(14),
+                                      LengthLimitingTextInputFormatter(19),
                                     ],
-                                    decoration: const InputDecoration(
-                                        hintText: "Phone"),
+                                    decoration:
+                                        InputDecoration(hintText: "Name"),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.orange),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.number,
+                                      controller: controller.phoneController,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                        LengthLimitingTextInputFormatter(14),
+                                      ],
+                                      decoration: const InputDecoration(
+                                          hintText: "Phone"),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              child: const Text("Scan QR Meja"),
-                              onPressed: () => controller.gotToScan(),
                             ),
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.orange),
+                                ),
+                                child: const Text("Reservasi"),
+                                onPressed: () =>
+                                    controller.goToReservasiTable(),
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
+                        );
+                      }),
                     ),
                   ),
                 ),
